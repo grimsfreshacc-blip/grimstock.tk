@@ -13,14 +13,14 @@
     <nav>
         <a href="#home">Home</a>
         <a href="#products">Products</a>
-        <a href="#contact">Support</a>
+        <a href="#support">Support</a>
     </nav>
 </header>
 
 <section id="home" class="hero">
     <h1>Premium Gaming Accounts</h1>
-    <p>Pay with Cash App. Instant support via live chat.</p>
-    <a href="#products" class="btn-primary">Browse Products</a>
+    <p>Secure checkout via Cash App • Live Support</p>
+    <a href="#products" class="btn-primary">Browse Accounts</a>
 </section>
 
 <section id="products">
@@ -28,42 +28,38 @@
     <div class="products-grid" id="products-container"></div>
 </section>
 
-<section id="contact">
+<section id="support">
     <h2>Support</h2>
     <p>
-        After payment, send your Cash App screenshot in the live chat
-        (bottom-right).
+        After purchasing, send your Cash App payment screenshot
+        in the live chat (bottom-right).
     </p>
 </section>
 
 <footer>
-    <p>© 2025 GrimStock</p>
+    © 2025 GrimStock • All Rights Reserved
 </footer>
 
-<!-- CASH APP PAYMENT MODAL -->
-<div id="payment-modal" class="modal">
+<!-- PRODUCT DETAILS MODAL -->
+<div id="details-modal" class="modal">
     <div class="modal-content">
-        <h3>Complete Payment</h3>
+        <img id="detail-img">
+        <h3 id="detail-name"></h3>
+        <p id="detail-desc"></p>
+        <div class="price" id="detail-price"></div>
 
-        <p><strong>Product:</strong> <span id="modal-product"></span></p>
-        <p><strong>Amount:</strong> <span id="modal-price"></span></p>
-
-        <hr>
-
-        <p>
-            Send payment to:<br>
-            <strong id="modal-cashapp"></strong>
-        </p>
+        <a id="cashapp-buy" target="_blank" class="buy-btn">
+            Pay with Cash App
+        </a>
 
         <p class="warning">
-            After payment, send a screenshot in the live chat.
+            After payment, send a screenshot in the support chat.
         </p>
 
-        <button onclick="closeModal()">Close</button>
+        <button onclick="closeDetails()">Close</button>
     </div>
 </div>
 
-<!-- MAIN SCRIPT -->
 <script src="script.js"></script>
 
 <!-- Tawk.to Live Chat -->
