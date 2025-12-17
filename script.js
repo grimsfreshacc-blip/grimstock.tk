@@ -1,4 +1,4 @@
-const CASHAPP_TAG = "$YourCashtagHere";
+const CASHAPP_TAG = "$etfz";
 
 const products = [
     {
@@ -49,7 +49,7 @@ products.forEach(product => {
 function buyNow(productName, price) {
     document.getElementById("modal-product").innerText = productName;
     document.getElementById("modal-price").innerText = `$${price}`;
-    document.getElementById("modal-cashapp").innerText = etfz;
+    document.getElementById("modal-cashapp").innerText = CASHAPP_TAG;
     document.getElementById("payment-modal").style.display = "flex";
 }
 
