@@ -1,24 +1,27 @@
+// js/auth.js
+
 function saveSession(user, role) {
-  localStorage.setItem("loggedUser", user);
-  localStorage.setItem("role", role);
+    localStorage.setItem("currentUser", JSON.stringify({ user, role }));
+}
+
+function getSession() {
+    return JSON.parse(localStorage.getItem("currentUser") || "null");
+}
+
+function getLoggedUser() {
+    const s = getSession();
+    return s ? s.user : null;
+}
+
+function getRole() {
+    const s = getSession();
+    return s ? s.role : null;
 }
 
 function logout() {
-  localStorage.clear();
-  location.href = "buyer-login.html";
+    localStorage.removeItem("currentUser");
+    location.href = "index.html";
 }
 
-function requireRole(role) {
-  if(localStorage.getItem("role") !== role){
-    alert("Access denied");
-    location.href = "buyer-login.html";
-  }
-}
-
-function getLoggedUser(){
-  return localStorage.getItem("loggedUser");
-}
-
-function getRole(){
-  return localStorage.getItem("role");
-}
+// Owner usernames (hardcoded)
+const OWNERS = ["owner1"]; // Add your owner usernames here
