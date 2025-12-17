@@ -52,11 +52,13 @@ if(getRole()==="buyer"){
   document.getElementById("loginLink").style.display = "inline-block";
 }
 
+// Load products
 fetch('products.json')
   .then(res=>res.json())
   .then(products=>{
     allProducts = products;
     const el=document.getElementById("products");
+    el.innerHTML = ''; // clear previous
     products.forEach(p=>{
       el.innerHTML+=`<div class="card">
         <h3>${p.title}</h3>
@@ -80,7 +82,7 @@ function viewProduct(id){
   if(getRole() === "buyer"){ 
     purchaseBtn.disabled = false;
     purchaseBtn.onclick = function(){
-      const cashapp = "https://cash.app/$YOURCASHAPP"; // replace with your CashApp link
+      const cashapp = "https://cash.app/$YOURCASHAPP"; // replace with your link
       alert("Please send payment via CashApp and then screenshot in the support chat!");
       window.open(cashapp,"_blank");
     }
