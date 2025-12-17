@@ -15,15 +15,17 @@
 </section>
 
 <script>
-const admins = [
-    {user:"admin", pass:"admin123"},
-    {user:"mod", pass:"mod456"},
-    {user:"super", pass:"super789"}
-];
+// Default admins
+if(!localStorage.getItem("admins")){
+    localStorage.setItem("admins", JSON.stringify([{user:"admin", pass:"admin123"}]));
+}
+
+function getAdmins(){ return JSON.parse(localStorage.getItem("admins")); }
 
 document.getElementById("loginBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const admins = getAdmins();
     const found = admins.find(a => a.user===username && a.pass===password);
     if(found){
         localStorage.setItem("isAdmin","true");
