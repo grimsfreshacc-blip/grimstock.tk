@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head><title>Admin</title></head>
+<head><title>Admin</title><link rel="stylesheet" href="style.css"><script src="js/auth.js"></script><script src="js/roles.js"></script></head>
 <body>
-
 <h2>Admin Panel</h2>
 <button onclick="logout()">Logout</button>
 
@@ -10,33 +9,25 @@
 <div id="orders"></div>
 
 <script>
-if (localStorage.getItem("role") !== "admin") {
-  alert("Admins only");
-  location.href = "buyer-login.html";
+requireAdmin();
+
+function loadOrders(){
+  const el=document.getElementById("orders");
+  const orders=JSON.parse(localStorage.getItem("orders")||"[]");
+  el.innerHTML="";
+  orders.forEach((o,i)=>{
+    el.innerHTML+=`<div>${o.id} - ${o.status} <button onclick="deliver(${i})">Mark Delivered</button></div>`;
+  });
 }
 
-const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-const el = document.getElementById("orders");
-
-orders.forEach((o,i) => {
-  el.innerHTML += `
-    <div>
-      ${o.id} - ${o.status}
-      <button onclick="deliver(${i})">Mark Delivered</button>
-    </div>
-  `;
-});
-
-function deliver(i) {
-  orders[i].status = "Delivered";
-  localStorage.setItem("orders", JSON.stringify(orders));
-  location.reload();
+function deliver(i){
+  let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+  orders[i].status="Delivered";
+  localStorage.setItem("orders",JSON.stringify(orders));
+  loadOrders();
 }
 
-function logout() {
-  localStorage.clear();
-  location.href = "buyer-login.html";
-}
+loadOrders();
 </script>
 </body>
 </html>
