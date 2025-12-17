@@ -1,45 +1,158 @@
+/* General Page */
 body {
-  background:#0f0f0f;
-  color:#fff;
-  font-family:Arial;
-}
-.card {
-  border:1px solid #333;
-  padding:10px;
-  margin:10px;
-  display:inline-block;
-  vertical-align:top;
-}
-button {
-  background:#00ff88;
-  border:none;
-  padding:6px 10px;
-  cursor:pointer;
-}
-input, select {
-  margin:5px;
-  padding:6px;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
 
-/* Modal styling */
+h1, h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+a {
+    color: #00bfff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Login/Signup Inputs and Buttons */
+input, select, button {
+    display: block;
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+}
+
+button {
+    cursor: pointer;
+    background-color: #00bfff;
+    color: #fff;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover:not(:disabled) {
+    background-color: #009acd;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Product Cards Grid */
+#products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+}
+
+.card {
+    background-color: #1c1c1c;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 220px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.card img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Modal Styles */
 #modal {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  color:#fff;
-  justify-content:center;
-  align-items:center;
-  overflow:auto;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    z-index: 1000;
 }
+
 #modal div {
-  background:#111;
-  padding:20px;
-  border:1px solid #fff;
-  max-width:500px;
-  margin:auto;
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
 }
-#modal span { float:right; cursor:pointer; }
+
+#modal img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+#modal span {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Header / Login Status */
+#loginStatus, #logoutBtn, #loginLink {
+    display: inline-block;
+    margin: 10px;
+    font-weight: bold;
+}
+
+#loginLink {
+    background-color: #00bfff;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+#loginLink:hover {
+    background-color: #009acd;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+    .card img {
+        width: 140px;
+        height: 140px;
+    }
+
+    #modal img {
+        width: 150px;
+        height: 150px;
+    }
+
+    input, select, button {
+        width: 95%;
+    }
+}
