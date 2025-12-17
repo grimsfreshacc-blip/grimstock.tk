@@ -1,18 +1,18 @@
 [
   {
-    "id": "acc001",
-    "title": "Wildcat Dark Skully",
-    "desc": "This account has 265 skins.",
-    "price": "$250",
-    "img": "images/locker1.jpg",
-    "seller": "grim"
+    "id": "prod1",
+    "title": "Example Account 1",
+    "desc": "This is a test description for Example Account 1.",
+    "price": "$10",
+    "img": "images/account1.png",
+    "seller": "seller1"
   },
   {
-    "id": "acc002",
-    "title": "Phantom Royale",
-    "desc": "150 skins + 50 emotes.",
-    "price": "$180",
-    "img": "images/locker2.jpg",
-    "seller": "grim"
+    "id": "prod2",
+    "title": "Example Account 2",
+    "desc": "This is a test description for Example Account 2.",
+    "price": "$15",
+    "img": "images/account2.png",
+    "seller": "seller2"
   }
 ]
