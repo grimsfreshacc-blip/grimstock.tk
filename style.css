@@ -1,17 +1,19 @@
-/* General Styles */
-body {
+/* Body & Theme */
+body, html {
     margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
     background-color: #121212;
     color: #fff;
 }
 
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background: #1a1a1a;
+    background-color: #1a1a1a;
 }
 
 header a {
@@ -24,7 +26,7 @@ header a:hover {
     color: #ff2d2d;
 }
 
-/* Hero Section */
+/* Hero */
 .hero {
     text-align: center;
     padding: 100px 20px;
@@ -42,7 +44,7 @@ header a:hover {
 }
 
 .hero button {
-    background: #ff2d2d;
+    background-color: #ff2d2d;
     color: #fff;
     border: none;
     padding: 15px 30px;
@@ -52,12 +54,12 @@ header a:hover {
 }
 
 .hero button:hover {
-    background: #e62424;
+    background-color: #e62424;
 }
 
 /* Products Section */
 .products-section {
-    padding: 50px;
+    padding: 50px 20px;
     text-align: center;
 }
 
@@ -75,16 +77,14 @@ header a:hover {
 .product-card {
     background: #1a1a1a;
     border-radius: 10px;
-    overflow: hidden;
     padding: 15px;
     text-align: left;
-    position: relative;
 }
 
 .product-card img {
     width: 100%;
-    height: auto;      /* preserves full image */
-    max-height: 400px; /* prevents huge images */
+    height: auto;
+    max-height: 300px;
     border-radius: 6px;
 }
 
@@ -100,30 +100,27 @@ header a:hover {
 }
 
 .product-card .price {
-    font-weight: bold;
     color: #ff2d2d;
-    margin-bottom: 10px;
+    font-weight: bold;
 }
 
-/* View/Purchase Button */
 .product-card button {
     width: 100%;
-    background: #ff2d2d;
+    background-color: #ff2d2d;
     color: #fff;
     border: none;
     padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .product-card button:hover {
-    background: #e62424;
+    background-color: #e62424;
 }
 
-/* Modal Styles */
+/* Modal */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -131,83 +128,82 @@ header a:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.9);
 }
 
 .modal-content {
     background-color: #1a1a1a;
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    width: 90%;
     max-width: 700px;
     border-radius: 10px;
     position: relative;
 }
 
-.close {
+.modal-content img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.modal-content h3, .modal-content p {
+    margin: 10px 0;
+}
+
+.modal-content a.purchase-btn {
+    display: block;
+    background-color: #ff2d2d;
+    text-align: center;
     color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+/* Admin mark button */
+.mark-btn {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.mark-btn:hover {
+    background-color: #ff2d2d;
+}
+
+.close {
     position: absolute;
     right: 15px;
     top: 10px;
     font-size: 28px;
     font-weight: bold;
+    color: #fff;
     cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
+.close:hover {
     color: #ff2d2d;
 }
 
-.modal-content img {
-    width: 100%;
-    height: auto;
-    max-height: 500px;
-    object-fit: contain;
-    border-radius: 6px;
-}
-
-.modal-content p {
-    margin-top: 10px;
-    color: #ccc;
-}
-
-.modal-content a.purchase-btn {
-    display: block;
-    margin-top: 15px;
-    background: #ff2d2d;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
+/* Trusted seller */
+.trusted-seller, .admin-note, .order-info, .fake-receipt {
+    background-color: #222;
     padding: 10px;
     border-radius: 6px;
-}
-
-.modal-content a.purchase-btn:hover {
-    background: #e62424;
-}
-
-/* Support Widget Adjustments */
-#tawk_ChatWidget {
-    z-index: 9999 !important;
+    margin-top: 15px;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-    }
-
+@media(max-width:768px){
     .products-grid {
         grid-template-columns: 1fr;
-    }
-
-    .modal-content {
-        width: 95%;
     }
 }
