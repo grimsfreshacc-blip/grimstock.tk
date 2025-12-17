@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>Owner</title></head>
+<body>
+
+<h1>👑 Owner Dashboard</h1>
+<button onclick="logout()">Logout</button>
+
+<h3>Admins</h3>
+<pre id="admins"></pre>
+
+<h3>Sellers</h3>
+<pre id="sellers"></pre>
+
+<script>
+const OWNERS = ["grim"];
+
+if (!OWNERS.includes(localStorage.getItem("loggedUser"))) {
+  alert("Owners only");
+  location.href = "index.html";
+}
+
+admins.textContent = localStorage.getItem("admins");
+sellers.textContent = localStorage.getItem("sellers");
+
+function logout() {
+  localStorage.clear();
+  location.href = "buyer-login.html";
+}
+</script>
+</body>
+</html>
