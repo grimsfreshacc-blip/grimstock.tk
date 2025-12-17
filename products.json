@@ -1,26 +1,18 @@
 [
   {
-    "name": "purple skull dark skully",
-    "price": "$449.99",
-    "image": "images/fortnite.jpg",
-    "description": " 170 Skins | OG Skull Trooper | Dark Skully | Masterchief - Matte Black | Thrilldiver | The Reaper | Elite Agent | Cobalt Snowfoot | Blue Striker | OG Ghost Portal | Dark Skully Satchel | 1500VB "
+    "id": "acc001",
+    "title": "Wildcat Dark Skully",
+    "desc": "This account has 265 skins.",
+    "price": "$250",
+    "img": "images/locker1.jpg",
+    "seller": "grim"
   },
   {
-    "name": "Discord Nitro Account",
-    "price": "$49.99",
-    "image": "images/discord.jpg",
-    "description": "Premium Discord account with Nitro subscription and server boost perks."
-  },
-  {
-    "name": "Stacked Roblox Account",
-    "price": "$189.99",
-    "image": "images/roblox.jpg",
-    "description": "Premium Roblox account loaded with 50,000 Robux and exclusive limited items."
-  },
-  {
-    "name": "Minecraft Java Premium Account",
-    "price": "$99.99",
-    "image": "images/minecraft.jpg",
-    "description": "Full access Minecraft Java Edition account."
+    "id": "acc002",
+    "title": "Phantom Royale",
+    "desc": "150 skins + 50 emotes.",
+    "price": "$180",
+    "img": "images/locker2.jpg",
+    "seller": "grim"
   }
 ]
