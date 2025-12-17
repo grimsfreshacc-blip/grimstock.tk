@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- Header -->
 <header>
   <div class="logo">GrimStock</div>
   <nav>
@@ -20,7 +19,6 @@
   </nav>
 </header>
 
-<!-- Products Section -->
 <h1 id="products">Products</h1>
 <div id="productsGrid"></div>
 
@@ -36,10 +34,10 @@
   </div>
 </div>
 
-<!-- Bottom-right Support Button -->
+<!-- Support Button -->
 <a id="support" href="javascript:void(0);" style="position:fixed;bottom:20px;right:20px;background:#E63946;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none;z-index:1001;" onclick="openTawk()">Support</a>
 
-<!-- Tawk.to Widget -->
+<!-- Tawk.to -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -50,29 +48,34 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
-function openTawk(){ Tawk_API.maximize ? Tawk_API.maximize() : alert("Support chat loading..."); }
+function openTawk() {
+  if (typeof Tawk_API !== "undefined") {
+    if (Tawk_API.maximize) Tawk_API.maximize();
+    else alert("Support chat loading...");
+  } else alert("Support chat initializing...");
+}
 </script>
 
-<!-- Products Script -->
 <script>
 let allProducts = [];
 
-// Show login/logout status
-if(getRole()==="buyer"){
+// Login status
+if(getRole() === "buyer") {
   document.getElementById("loginStatus").innerText = "Logged in as " + getLoggedUser();
   document.getElementById("logoutBtn").style.display = "inline-block";
 } else {
   document.getElementById("loginLink").style.display = "inline-block";
 }
 
+// Load products
 fetch('products.json')
-  .then(res=>res.json())
-  .then(products=>{
+  .then(res => res.json())
+  .then(products => {
     allProducts = products;
-    const el=document.getElementById("productsGrid");
+    const el = document.getElementById("productsGrid");
     el.innerHTML = '';
-    products.forEach(p=>{
-      el.innerHTML+=`<div class="card">
+    products.forEach(p => {
+      el.innerHTML += `<div class="card">
         <h3>${p.title}</h3>
         <img src="${p.img}" style="width:180px;height:180px;object-fit:cover;">
         <p>${p.price}</p>
@@ -94,8 +97,8 @@ function viewProduct(id){
   if(getRole() === "buyer"){ 
     purchaseBtn.disabled = false;
     purchaseBtn.onclick = function(){
-      const cashapp = "https://cash.app/$YOURCASHAPP"; // replace with your link
-      alert("Please send payment via CashApp and then screenshot in the support chat!");
+      const cashapp = "https://cash.app/$YOURCASHAPP";
+      alert("Please send payment via CashApp and screenshot in support chat!");
       window.open(cashapp,"_blank");
     }
   } else {
@@ -109,7 +112,7 @@ function viewProduct(id){
 }
 
 function closeModal(){
-  document.getElementById("modal").style.display="none";
+  document.getElementById("modal").style.display = "none";
 }
 </script>
 
