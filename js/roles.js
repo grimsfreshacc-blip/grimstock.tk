@@ -1,26 +1,17 @@
-const OWNERS = ["grim"];
+// js/roles.js
 
-function isOwner() {
-  return OWNERS.includes(getLoggedUser());
+// Helper functions to manage buyers/sellers/admins
+function getBuyers() {
+    return JSON.parse(localStorage.getItem("buyers") || "[]");
+}
+function getSellers() {
+    return JSON.parse(localStorage.getItem("sellers") || "[]");
+}
+function getAdmins() {
+    return JSON.parse(localStorage.getItem("admins") || "[]");
 }
 
-function isAdmin() {
-  const role = getRole();
-  return role === "admin" || isOwner();
-}
-
-function isSeller() {
-  return getRole() === "seller";
-}
-
-function requireOwner() {
-  if(!isOwner()) { alert("Owners only"); location.href="index.html"; }
-}
-
-function requireAdmin() {
-  if(!isAdmin()) { alert("Admins only"); location.href="index.html"; }
-}
-
-function requireSeller() {
-  if(!isSeller()) { alert("Sellers only"); location.href="index.html"; }
-}
+// Save functions
+function saveBuyers(arr) { localStorage.setItem("buyers", JSON.stringify(arr)); }
+function saveSellers(arr) { localStorage.setItem("sellers", JSON.stringify(arr)); }
+function saveAdmins(arr) { localStorage.setItem("admins", JSON.stringify(arr)); }
