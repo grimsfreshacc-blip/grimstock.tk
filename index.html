@@ -1,15 +1,50 @@
-<div class="products-section">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrimStock</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="logo">GrimStock</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#support">Support</a>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <h1>Premium Gaming Accounts</h1>
+    <p>Secure checkout via Cash App • Live Support</p>
+    <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Browse Accounts</button>
+</section>
+
+<!-- Products Section -->
+<section class="products-section" id="products">
     <h2>Available Accounts</h2>
     <div class="products-grid">
-        <!-- Example product -->
+        <!-- Example Product -->
         <div class="product-card">
             <img src="images/locker1.jpg" alt="Locker 1">
             <h3>Wildcat Dark Skully</h3>
             <p class="price">$250</p>
-            <button class="view-btn" data-img="images/locker1.jpg" data-title="Wildcat Dark Skully" data-price="$250" data-desc="This account has 265 skins.">View</button>
+            <button class="view-btn"
+                data-img="images/locker1.jpg"
+                data-title="Wildcat Dark Skully"
+                data-price="$250"
+                data-desc="This account has 265 skins.">
+                View
+            </button>
         </div>
+        <!-- Add more products here -->
     </div>
-</div>
+</section>
 
 <!-- Modal -->
 <div id="productModal" class="modal">
@@ -19,19 +54,72 @@
         <h3 id="modalTitle"></h3>
         <p id="modalDesc"></p>
         <p id="modalPrice"></p>
+
+        <!-- Trusted Seller Section -->
+        <div class="trusted-seller">
+            <h4>Trusted Seller</h4>
+            <p>✅ Verified accounts • ✅ Secure checkout • ✅ Fast delivery</p>
+        </div>
+
+        <!-- Admin Note (manual mark) -->
+        <div class="admin-note">
+            <strong>Admin Note:</strong>
+            <p id="adminNote">Mark manually after delivery.</p>
+        </div>
+
+        <!-- Order ID & Status -->
+        <div class="order-info">
+            <p>🆔 Order ID: <span id="orderId"></span></p>
+            <p>⏳ Status: <span id="orderStatus">Pending</span></p>
+            <button id="markDeliveredBtn" class="mark-btn">Mark Delivered</button>
+        </div>
+
+        <!-- Fake Receipt Confirmation -->
+        <div class="fake-receipt">
+            <h4>Confirmation Page</h4>
+            <p>Thank you for purchasing! Screenshot this for your records.</p>
+        </div>
+
         <a id="purchaseLink" class="purchase-btn" href="https://cash.app/$YourCashTag" target="_blank">Purchase via CashApp</a>
     </div>
 </div>
 
+<!-- Tawk.to Support -->
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
 <script>
-// Modal script
+// Generate random Order ID
+function generateOrderID() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let id = '';
+    for (let i = 0; i < 8; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+}
+
+// Modal Script
 const modal = document.getElementById('productModal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
 const modalDesc = document.getElementById('modalDesc');
 const modalPrice = document.getElementById('modalPrice');
-const purchaseLink = document.getElementById('purchaseLink');
 const closeBtn = document.querySelector('.close');
+const orderIdElem = document.getElementById('orderId');
+const orderStatusElem = document.getElementById('orderStatus');
+const markDeliveredBtn = document.getElementById('markDeliveredBtn');
 
 document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -39,10 +127,22 @@ document.querySelectorAll('.view-btn').forEach(btn => {
         modalTitle.textContent = btn.dataset.title;
         modalDesc.textContent = btn.dataset.desc;
         modalPrice.textContent = btn.dataset.price;
+        orderIdElem.textContent = generateOrderID();
+        orderStatusElem.textContent = 'Pending';
         modal.style.display = 'block';
     });
 });
 
+// Close modal
 closeBtn.onclick = () => modal.style.display = 'none';
 window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; }
+
+// Admin mark delivered button
+markDeliveredBtn.addEventListener('click', () => {
+    orderStatusElem.textContent = 'Delivered';
+    alert('Order marked as Delivered!');
+});
 </script>
+
+</body>
+</html>
