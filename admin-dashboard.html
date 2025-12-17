@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard - GrimStock</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/auth.js"></script>
+  <script src="js/roles.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">GrimStock - Admin</div>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<h2>Admin Dashboard</h2>
+<h3>Sellers</h3>
+<div id="sellersList"></div>
+
+<script>
+if(getRole()!=="admin"){ alert("Access denied"); window.location.href="index.html"; }
+
+function renderSellers(){
+  const sellersEl=document.getElementById("sellersList");
+  sellersEl.innerHTML='';
+  getSellers().forEach(s=>{
+    sellersEl.innerHTML+=`<div>${s.username} <button onclick="removeSeller('${s.username}')">Remove</button></div>`;
+  });
+}
+
+function removeSeller(username){
+  let sellers = getSellers();
+  sellers = sellers.filter(s=>s.username!==username);
+  saveSellers(sellers);
+  renderSellers();
+}
+
+renderSellers();
+</script>
+
+</body>
+</html>
