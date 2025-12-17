@@ -37,11 +37,10 @@ products.forEach((p, index) => {
     container.appendChild(card);
 });
 
-/* Event delegation: handle all clicks inside container */
+/* Event delegation for dynamically created buttons */
 container.addEventListener("click", (e) => {
-    // If user clicked the "View" button
     const btn = e.target.closest(".view-btn");
-    if (!btn) return; // Ignore other clicks
+    if (!btn) return;
 
     const index = btn.dataset.index;
     const product = products[index];
@@ -52,12 +51,29 @@ container.addEventListener("click", (e) => {
     document.getElementById("detail-price").textContent = `$${product.price}`;
 
     const cashappLink = `https://cash.app/${CASHAPP_TAG.replace("$","")}/${product.price}`;
-    document.getElementById("cashapp-buy").href = cashappLink;
+    const buyBtn = document.getElementById("cashapp-buy");
+    buyBtn.href = cashappLink;
 
     document.getElementById("details-modal").style.display = "flex";
+
+    /* Generate order ID for receipt */
+    const orderID = "ORD-" + Math.floor(Math.random()*900000 + 100000);
+    document.getElementById("order-id").textContent = orderID;
+    document.getElementById("order-total").textContent = `$${product.price}`;
+    document.getElementById("order-status").textContent = "Pending";
+    document.getElementById("admin-notes").textContent = "Admin Notes: Verify payment screenshot in support chat.";
 });
 
-/* Optional: close modal function */
+/* Close modals */
 function closeDetails() {
     document.getElementById("details-modal").style.display = "none";
 }
+function closeReceipt() {
+    document.getElementById("receipt-modal").style.display = "none";
+}
+
+/* Optional: when user clicks Cash App, also show receipt modal */
+document.getElementById("cashapp-buy").addEventListener("click", () => {
+    document.getElementById("details-modal").style.display = "none";
+    document.getElementById("receipt-modal").style.display = "flex";
+});
