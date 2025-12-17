@@ -1,4 +1,4 @@
-const CASHAPP_TAG = "$etfz";
+const CASHAPP_TAG = "$eftz";
 
 const products = [
     {
@@ -10,7 +10,7 @@ const products = [
     },
     {
         name: "Discord Nitro Account",
-        description: "1 year Nitro, ready to use.",
+        description: "1 Year Nitro subscription.",
         price: 49,
         image: "images/discord1.jpg",
         featured: false
@@ -19,7 +19,7 @@ const products = [
 
 const container = document.getElementById("products-container");
 
-products.forEach(p => {
+products.forEach((p, index) => {
     const card = document.createElement("div");
     card.className = "product-card";
 
@@ -30,20 +30,25 @@ products.forEach(p => {
             <h4>${p.name}</h4>
             <p>${p.description}</p>
             <div class="price">$${p.price}</div>
-            <button class="buy-btn">Purchase</button>
+            <button class="buy-btn" data-index="${index}">Purchase</button>
         </div>
     `;
 
-    card.querySelector(".buy-btn").onclick = () => buyNow(p.name, p.price);
     container.appendChild(card);
 });
 
-function buyNow(name, price) {
-    document.getElementById("modal-product").innerText = name;
-    document.getElementById("modal-price").innerText = `$${price}`;
-    document.getElementById("modal-cashapp").innerText = CASHAPP_TAG;
-    document.getElementById("payment-modal").style.display = "flex";
-}
+/* CLICK HANDLER (THIS IS THE FIX) */
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("buy-btn")) {
+        const product = products[e.target.dataset.index];
+
+        document.getElementById("modal-product").textContent = product.name;
+        document.getElementById("modal-price").textContent = `$${product.price}`;
+        document.getElementById("modal-cashapp").textContent = CASHAPP_TAG;
+
+        document.getElementById("payment-modal").style.display = "flex";
+    }
+});
 
 function closeModal() {
     document.getElementById("payment-modal").style.display = "none";
