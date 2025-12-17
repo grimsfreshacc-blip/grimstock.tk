@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<section class="login-section">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+</section>
+
+<script>
+const admins = [
+    {user:"admin", pass:"admin123"},
+    {user:"mod", pass:"mod456"},
+    {user:"super", pass:"super789"}
+];
+
+document.getElementById("loginBtn").addEventListener("click", () => {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const found = admins.find(a => a.user===username && a.pass===password);
+    if(found){
+        localStorage.setItem("isAdmin","true");
+        localStorage.setItem("adminName",username);
+        window.location.href="admin.html";
+    } else alert("Invalid username or password!");
+});
+</script>
+</body>
+</html>
