@@ -3,13 +3,14 @@
 <head>
   <title>Login</title>
   <link rel="stylesheet" href="style.css">
+  <script src="js/auth.js"></script>
 </head>
 <body>
-
 <h2>Login</h2>
 <input id="user" placeholder="Username">
 <input id="pass" placeholder="Password" type="password">
 <button onclick="login()">Login</button>
+<p>Don't have an account? <a href="signup.html">Sign Up</a></p>
 
 <script>
 function login() {
@@ -17,36 +18,14 @@ function login() {
   const p = pass.value.trim();
 
   let buyers = JSON.parse(localStorage.getItem("buyers") || "[]");
-  let admins = JSON.parse(localStorage.getItem("admins") || "[]");
   let sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
+  let admins = JSON.parse(localStorage.getItem("admins") || "[]");
 
-  if (u === "grim") {
-    localStorage.setItem("loggedUser", u);
-    localStorage.setItem("role", "owner");
-    location.href = "owner.html";
-    return;
-  }
+  if(OWNERS.includes(u)) { saveSession(u,"owner"); location.href="owner.html"; return; }
 
-  if (admins.find(a => a.user === u && a.pass === p)) {
-    localStorage.setItem("loggedUser", u);
-    localStorage.setItem("role", "admin");
-    location.href = "admin.html";
-    return;
-  }
-
-  if (sellers.find(s => s.user === u && s.pass === p)) {
-    localStorage.setItem("loggedUser", u);
-    localStorage.setItem("role", "seller");
-    location.href = "seller-dashboard.html";
-    return;
-  }
-
-  if (buyers.find(b => b.user === u && b.pass === p)) {
-    localStorage.setItem("loggedUser", u);
-    localStorage.setItem("role", "buyer");
-    location.href = "index.html";
-    return;
-  }
+  if(admins.find(a=>a.user===u && a.pass===p)) { saveSession(u,"admin"); location.href="admin.html"; return; }
+  if(sellers.find(s=>s.user===u && s.pass===p)) { saveSession(u,"seller"); location.href="seller-dashboard.html"; return; }
+  if(buyers.find(b=>b.user===u && b.pass===p)) { saveSession(u,"buyer"); location.href="index.html"; return; }
 
   alert("Invalid login");
 }
