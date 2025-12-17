@@ -9,9 +9,9 @@ const products = [
         featured: true
     },
     {
-        name: "Discord Nitro Account",
-        description: "1 Year Discord Nitro account with boosts and premium perks.",
-        price: 49,
+        name: "wildcat dark skully 265 skins",
+        description: "safe 2 months pdf downloadable mail changeable safe asf clean asf",
+        price: 250,
         image: "images/discord1.jpg",
         featured: false
     }
