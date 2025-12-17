@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+if(localStorage.getItem("isAdmin")!=="true"){
+    alert("Unauthorized! Login first.");
+    window.location.href="admin-login.html";
+}
+</script>
+
+<header>
+    <div class="logo">GrimStock Admin</div>
+    <div class="admin-name">Logged in as: <span id="adminName"></span></div>
+    <button onclick="logout()">Logout</button>
+</header>
+
+<section class="products-section admin-panel">
+    <h2>Orders</h2>
+    <div id="adminOrdersGrid"></div>
+</section>
+
+<script>
+document.getElementById("adminName").textContent = localStorage.getItem("adminName")||"";
+
+function logout(){
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("adminName");
+    window.location.href="admin-login.html";
+}
+
+const adminOrdersGrid = document.getElementById('adminOrdersGrid');
+let lastOrdersJSON = '';
+
+function loadOrders(){
+    const orders = JSON.parse(localStorage.getItem('grimOrders'))||[];
+    const currentJSON = JSON.stringify(orders);
+    if(currentJSON!==lastOrdersJSON){
+        adminOrdersGrid.innerHTML='';
+        orders.forEach((o,index)=>{
+            const statusClass=o.status==="Delivered"?"status-delivered":"status-pending";
+            const screenshotClass=o.screenshotStatus==="✅"?"screenshot-yes":"screenshot-no";
+            const card = document.createElement('div');
+            card.className='product-card';
+            card.innerHTML=`
+                <h3>${o.title}</h3>
+                <p>Price: ${o.price}</p>
+                <p>🆔 Order ID: ${o.orderId}</p>
+                <p>⏳ Status: <span class="${statusClass}" id="status${index}">${o.status}</span></p>
+                <p>📷 Screenshot: <span class="${screenshotClass}" id="screenshot${index}">${o.screenshotStatus}</span></p>
+                <button class="mark-btn" onclick="markDelivered(${index})">Mark Delivered</button>
+                <button class="mark-btn" onclick="markScreenshot(${index})">Mark Screenshot Received</button>
+            `;
+            adminOrdersGrid.appendChild(card);
+        });
+        lastOrdersJSON=currentJSON;
+    }
+}
+
+function markDelivered(index){
+    let orders=JSON.parse(localStorage.getItem('grimOrders'))||[];
+    orders[index].status="Delivered";
+    localStorage.setItem('grimOrders',JSON.stringify(orders));
+    loadOrders();
+}
+function markScreenshot(index){
+    let orders=JSON.parse(localStorage.getItem('grimOrders'))||[];
+    orders[index].screenshotStatus="✅";
+    localStorage.setItem('grimOrders',JSON.stringify(orders));
+    loadOrders();
+}
+
+loadOrders();
+setInterval(loadOrders,1000);
+</script>
+</body>
+</html>
