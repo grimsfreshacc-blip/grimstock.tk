@@ -19,9 +19,7 @@
 
 <section class="products-section">
     <h2>Available Accounts</h2>
-    <div class="products-grid" id="productsGrid">
-        <!-- Products loaded dynamically -->
-    </div>
+    <div class="products-grid" id="productsGrid"></div>
 </section>
 
 <!-- Product Modal -->
@@ -34,14 +32,16 @@
         <p class="price" id="modalPrice"></p>
         <p>🆔 Order ID: <span id="orderId"></span></p>
         <p>⏳ Status: <span id="orderStatus"></span></p>
+        <p>📷 Screenshot: <span id="screenshotStatus"></span></p>
         <a id="purchaseLink" href="https://cash.app/$YOURCASHAPP" target="_blank">
             <button>Purchase via CashApp</button>
         </a>
         <button id="markDeliveredBtn">Mark Delivered (Admin Only)</button>
+        <button id="markScreenshotBtn">Mark Screenshot Received (Admin Only)</button>
     </div>
 </div>
 
-<!-- Tawk.to Script -->
+<!-- Tawk.to -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -57,14 +57,10 @@ s0.parentNode.insertBefore(s1,s0);
 <script>
 // Buyer Script
 const productsGrid = document.getElementById('productsGrid');
-
-// Default products
 let defaultProducts = [
     { img: "images/locker1.jpg", title: "Wildcat Dark Skully", price: "$250", desc: "This account has 265 skins." },
     { img: "images/locker2.jpg", title: "Phantom Royale", price: "$180", desc: "150 skins + 50 emotes." }
 ];
-
-// Load seller accounts too
 let sellerAccounts = JSON.parse(localStorage.getItem("sellerAccounts")) || [];
 const allProducts = defaultProducts.concat(sellerAccounts);
 
@@ -96,18 +92,18 @@ const modalPrice = document.getElementById('modalPrice');
 const closeBtn = document.querySelector('.close');
 const orderIdElem = document.getElementById('orderId');
 const orderStatusElem = document.getElementById('orderStatus');
+const screenshotElem = document.getElementById('screenshotStatus');
 const markDeliveredBtn = document.getElementById('markDeliveredBtn');
+const markScreenshotBtn = document.getElementById('markScreenshotBtn');
 const purchaseBtn = document.getElementById('purchaseLink');
+const adminKeys = ["admin123","mod456","super789"];
 
-// Generate order ID
 function generateOrderID() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let id = '';
     for (let i = 0; i < 8; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
     return id;
 }
-
-const adminKeys = ["admin123","mod456","super789"]; // Admin keys for buyer modal
 
 document.addEventListener('click', e => {
     if(e.target && e.target.classList.contains('view-btn')){
@@ -120,6 +116,7 @@ document.addEventListener('click', e => {
         let order = orders.find(o => o.title === title);
         let orderID = order ? order.orderId : generateOrderID();
         let status = order ? order.status : 'Pending';
+        let screenshotStatus = order ? order.screenshotStatus : '❌';
 
         modalImage.src = img;
         modalTitle.textContent = title;
@@ -127,10 +124,11 @@ document.addEventListener('click', e => {
         modalPrice.textContent = price;
         orderIdElem.textContent = orderID;
         orderStatusElem.textContent = status;
+        screenshotElem.textContent = screenshotStatus;
         modal.style.display = 'block';
 
         purchaseBtn.onclick = () => {
-            if(!order){ // Only save if not purchased
+            if(!order){ // save order if not exists
                 orders.push({orderId: orderID, title, price, status:"Pending", screenshotStatus:"❌"});
                 localStorage.setItem('grimOrders', JSON.stringify(orders));
                 alert("Order saved! After payment, send proof in support chat.");
@@ -146,7 +144,6 @@ window.onclick = e => { if(e.target == modal) modal.style.display = 'none'; }
 markDeliveredBtn.addEventListener('click', () => {
     let key = prompt("Enter admin key:");
     if(adminKeys.includes(key)){
-        orderStatusElem.textContent = 'Delivered';
         let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
         let index = orders.findIndex(o => o.orderId === orderIdElem.textContent);
         if(index>=0){ orders[index].status='Delivered'; localStorage.setItem('grimOrders', JSON.stringify(orders)); }
@@ -154,11 +151,24 @@ markDeliveredBtn.addEventListener('click', () => {
     } else alert("Unauthorized!");
 });
 
-// Update status every second
+markScreenshotBtn.addEventListener('click', () => {
+    let key = prompt("Enter admin key:");
+    if(adminKeys.includes(key)){
+        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
+        let index = orders.findIndex(o => o.orderId === orderIdElem.textContent);
+        if(index>=0){ orders[index].screenshotStatus='✅'; localStorage.setItem('grimOrders', JSON.stringify(orders)); }
+        alert("Screenshot marked!");
+    } else alert("Unauthorized!");
+});
+
+// Auto update modal status
 setInterval(()=>{
     let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
     let order = orders.find(o => o.orderId === orderIdElem.textContent);
-    if(order) orderStatusElem.textContent = order.status;
+    if(order){
+        orderStatusElem.textContent = order.status;
+        screenshotElem.textContent = order.screenshotStatus;
+    }
 },1000);
 </script>
 </body>
