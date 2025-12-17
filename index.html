@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrimStock Marketplace</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrimStock Marketplace</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -36,6 +36,14 @@
     </p>
 </section>
 
+<!-- Trusted Seller Badge -->
+<section id="trusted-seller">
+    <div class="trusted-badge">
+        <strong>✅ Trusted Seller</strong>
+        <p>All accounts verified. Manual delivery only after payment screenshot.</p>
+    </div>
+</section>
+
 <footer>
     © 2025 GrimStock • All Rights Reserved
 </footer>
@@ -48,15 +56,22 @@
         <p id="detail-desc"></p>
         <div class="price" id="detail-price"></div>
 
-        <a id="cashapp-buy" target="_blank" class="buy-btn">
-            Pay with Cash App
-        </a>
+        <a id="cashapp-buy" target="_blank" class="buy-btn">Pay with Cash App</a>
 
-        <p class="warning">
-            After payment, send a screenshot in the support chat.
-        </p>
-
+        <p class="warning">After payment, send a screenshot in the support chat.</p>
         <button onclick="closeDetails()">Close</button>
+    </div>
+</div>
+
+<!-- ORDER RECEIPT MODAL -->
+<div id="receipt-modal" class="modal">
+    <div class="modal-content">
+        <h3>Order Confirmation</h3>
+        <p>Order ID: <span id="order-id"></span></p>
+        <p>Status: <span id="order-status">Pending</span></p>
+        <p id="admin-notes">Admin Notes: Send payment screenshot to support chat.</p>
+        <p>Total: <span id="order-total"></span></p>
+        <button onclick="closeReceipt()">Close</button>
     </div>
 </div>
 
