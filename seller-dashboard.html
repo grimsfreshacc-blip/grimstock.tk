@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+if(!localStorage.getItem("sellerLoggedIn")){
+    alert("Unauthorized! Login first.");
+    window.location.href="seller-login.html";
+}
+</script>
+
+<header>
+<h2>Seller Dashboard</h2>
+<button onclick="logout()">Logout</button>
+</header>
+
+<section class="post-account">
+<h3>Post a New Account</h3>
+<input type="text" id="accountTitle" placeholder="Account Title">
+<input type="text" id="accountPrice" placeholder="Price">
+<input type="text" id="accountDesc" placeholder="Description">
+<input type="text" id="accountImg" placeholder="Image URL">
+<button onclick="postAccount()">Post Account</button>
+</section>
+
+<script>
+function logout(){
+    localStorage.removeItem("sellerLoggedIn");
+    window.location.href="seller-login.html";
+}
+
+function postAccount(){
+    const title=document.getElementById("accountTitle").value;
+    const price=document.getElementById("accountPrice").value;
+    const desc=document.getElementById("accountDesc").value;
+    const img=document.getElementById("accountImg").value;
+    if(!title||!price||!desc||!img){ alert("Fill all fields!"); return; }
+    const seller=localStorage.getItem("sellerLoggedIn");
+    let accounts=JSON.parse(localStorage.getItem("sellerAccounts"))||[];
+    accounts.push({title,price,desc,img,seller});
+    localStorage.setItem("sellerAccounts",JSON.stringify(accounts));
+    alert("Account posted successfully!");
+}
+</script>
+</body>
+</html>
