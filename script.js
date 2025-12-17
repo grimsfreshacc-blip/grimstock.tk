@@ -2,9 +2,9 @@ const CASHAPP_TAG = "$etfz";
 
 const products = [
     {
-        name: "OG Fortnite Account",
-        description: "Very rare Fortnite account with OG skins, exclusive emotes, and stacked inventory.",
-        price: 299,
+        name: "purple skull",
+        description: "crazy safe skull dark skully 170 skins OG Skull Trooper | Dark Skully | Masterchief - Matte Black | Thrilldiver | The Reaper | Elite Agent | Cobalt Snowfoot | Blue Striker | OG Ghost Portal | Dark Skully Satchel | 1500VB 15 name changes safe asf lifetime warrenty",
+        price: $299.99,
         image: "images/fortnite1.jpg",
         featured: true
     },
