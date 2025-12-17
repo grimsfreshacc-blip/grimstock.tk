@@ -1,94 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrimStock Marketplace</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<header>
-    <div class="logo">GrimStock</div>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#products">Products</a>
-        <a href="#support">Support</a>
-    </nav>
-</header>
-
-<section id="home" class="hero">
-    <h1>Premium Gaming Accounts</h1>
-    <p>Secure checkout via Cash App • Live Support</p>
-    <a href="#products" class="btn-primary">Browse Accounts</a>
-</section>
-
-<section id="products">
+<div class="products-section">
     <h2>Available Accounts</h2>
-    <div class="products-grid" id="products-container"></div>
-</section>
-
-<section id="support">
-    <h2>Support</h2>
-    <p>
-        After purchasing, send your Cash App payment screenshot
-        in the live chat (bottom-right).
-    </p>
-</section>
-
-<!-- Trusted Seller Badge -->
-<section id="trusted-seller">
-    <div class="trusted-badge">
-        <strong>✅ Trusted Seller</strong>
-        <p>All accounts verified. Manual delivery only after payment screenshot.</p>
-    </div>
-</section>
-
-<footer>
-    © 2025 GrimStock • All Rights Reserved
-</footer>
-
-<!-- PRODUCT DETAILS MODAL -->
-<div id="details-modal" class="modal">
-    <div class="modal-content">
-        <img id="detail-img">
-        <h3 id="detail-name"></h3>
-        <p id="detail-desc"></p>
-        <div class="price" id="detail-price"></div>
-
-        <a id="cashapp-buy" target="_blank" class="buy-btn">Pay with Cash App</a>
-
-        <p class="warning">After payment, send a screenshot in the support chat.</p>
-        <button onclick="closeDetails()">Close</button>
+    <div class="products-grid">
+        <!-- Example product -->
+        <div class="product-card">
+            <img src="images/locker1.jpg" alt="Locker 1">
+            <h3>Wildcat Dark Skully</h3>
+            <p class="price">$250</p>
+            <button class="view-btn" data-img="images/locker1.jpg" data-title="Wildcat Dark Skully" data-price="$250" data-desc="This account has 265 skins.">View</button>
+        </div>
     </div>
 </div>
 
-<!-- ORDER RECEIPT MODAL -->
-<div id="receipt-modal" class="modal">
+<!-- Modal -->
+<div id="productModal" class="modal">
     <div class="modal-content">
-        <h3>Order Confirmation</h3>
-        <p>Order ID: <span id="order-id"></span></p>
-        <p>Status: <span id="order-status">Pending</span></p>
-        <p id="admin-notes">Admin Notes: Send payment screenshot to support chat.</p>
-        <p>Total: <span id="order-total"></span></p>
-        <button onclick="closeReceipt()">Close</button>
+        <span class="close">&times;</span>
+        <img id="modalImage" src="" alt="">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+        <p id="modalPrice"></p>
+        <a id="purchaseLink" class="purchase-btn" href="https://cash.app/$YourCashTag" target="_blank">Purchase via CashApp</a>
     </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+// Modal script
+const modal = document.getElementById('productModal');
+const modalImage = document.getElementById('modalImage');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalPrice = document.getElementById('modalPrice');
+const purchaseLink = document.getElementById('purchaseLink');
+const closeBtn = document.querySelector('.close');
 
-<!-- Tawk.to Live Chat -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
+document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        modalImage.src = btn.dataset.img;
+        modalTitle.textContent = btn.dataset.title;
+        modalDesc.textContent = btn.dataset.desc;
+        modalPrice.textContent = btn.dataset.price;
+        modal.style.display = 'block';
+    });
+});
+
+closeBtn.onclick = () => modal.style.display = 'none';
+window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; }
 </script>
-
-</body>
-</html>
