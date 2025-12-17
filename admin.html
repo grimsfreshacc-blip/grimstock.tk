@@ -1,176 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<html>
+<head><title>Admin</title></head>
 <body>
-<script>
-if(localStorage.getItem("isAdmin")!=="true"){
-    alert("Unauthorized! Login first.");
-    window.location.href="admin-login.html";
-}
-</script>
 
-<header>
-    <div class="logo">GrimStock Admin</div>
-    <div class="admin-name">Logged in as: <span id="adminName"></span></div>
-    <button onclick="logout()">Logout</button>
-</header>
+<h2>Admin Panel</h2>
+<button onclick="logout()">Logout</button>
 
-<section class="products-section admin-panel">
-    <h2>Orders</h2>
-    <div id="adminOrdersGrid"></div>
-</section>
-
-<section class="manage-users">
-    <h2>Manage Users</h2>
-
-    <h3>Admins</h3>
-    <div id="adminList"></div>
-    <input type="text" id="newAdminUser" placeholder="Username">
-    <input type="password" id="newAdminPass" placeholder="Password">
-    <button onclick="addAdmin()">Add Admin</button>
-
-    <h3>Sellers</h3>
-    <div id="sellerList"></div>
-    <input type="text" id="newSellerUser" placeholder="Username">
-    <input type="password" id="newSellerPass" placeholder="Password">
-    <button onclick="addSeller()">Add Seller</button>
-</section>
+<h3>Orders</h3>
+<div id="orders"></div>
 
 <script>
-const currentAdmin = localStorage.getItem("adminName");
-
-function logout(){
-    localStorage.removeItem("isAdmin");
-    localStorage.removeItem("adminName");
-    window.location.href="admin-login.html";
+if (localStorage.getItem("role") !== "admin") {
+  alert("Admins only");
+  location.href = "buyer-login.html";
 }
 
-// Orders
-const adminOrdersGrid = document.getElementById('adminOrdersGrid');
-let lastOrdersJSON = '';
-function loadOrders(){
-    const orders = JSON.parse(localStorage.getItem('grimOrders'))||[];
-    const currentJSON = JSON.stringify(orders);
-    if(currentJSON!==lastOrdersJSON){
-        adminOrdersGrid.innerHTML='';
-        orders.forEach((o,index)=>{
-            const statusClass=o.status==="Delivered"?"status-delivered":"status-pending";
-            const screenshotClass=o.screenshotStatus==="✅"?"screenshot-yes":"screenshot-no";
-            const card = document.createElement('div');
-            card.className='product-card';
-            card.innerHTML=`
-                <h3>${o.title}</h3>
-                <p>Price: ${o.price}</p>
-                <p>🆔 Order ID: ${o.orderId}</p>
-                <p>⏳ Status: <span class="${statusClass}" id="status${index}">${o.status}</span></p>
-                <p>📷 Screenshot: <span class="${screenshotClass}" id="screenshot${index}">${o.screenshotStatus}</span></p>
-                <button class="mark-btn" onclick="markDelivered(${index})">Mark Delivered</button>
-                <button class="mark-btn" onclick="markScreenshot(${index})">Mark Screenshot Received</button>
-            `;
-            adminOrdersGrid.appendChild(card);
-        });
-        lastOrdersJSON=currentJSON;
-    }
-}
-function markDelivered(index){
-    let orders=JSON.parse(localStorage.getItem('grimOrders'))||[];
-    orders[index].status="Delivered";
-    localStorage.setItem('grimOrders',JSON.stringify(orders));
-    loadOrders();
-}
-function markScreenshot(index){
-    let orders=JSON.parse(localStorage.getItem('grimOrders'))||[];
-    orders[index].screenshotStatus="✅";
-    localStorage.setItem('grimOrders',JSON.stringify(orders));
-    loadOrders();
-}
-loadOrders();
-setInterval(loadOrders,1000);
+const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+const el = document.getElementById("orders");
 
-// User management
-if(!localStorage.getItem("admins")){
-    localStorage.setItem("admins", JSON.stringify([{user:"admin", pass:"admin123"}]));
-}
-if(!localStorage.getItem("sellers")){
-    localStorage.setItem("sellers", JSON.stringify([]));
-}
-function loadUsers(){
-    const adminList = document.getElementById("adminList");
-    const sellerList = document.getElementById("sellerList");
-    adminList.innerHTML = "";
-    sellerList.innerHTML = "";
+orders.forEach((o,i) => {
+  el.innerHTML += `
+    <div>
+      ${o.id} - ${o.status}
+      <button onclick="deliver(${i})">Mark Delivered</button>
+    </div>
+  `;
+});
 
-    let admins = JSON.parse(localStorage.getItem("admins")) || [];
-    let sellers = JSON.parse(localStorage.getItem("sellers")) || [];
-
-    admins.forEach((a,index)=>{
-        const div = document.createElement("div");
-        let info = a.user;
-        if(a.user === currentAdmin){ info += " (You)"; }
-        else info += ` <button onclick="removeAdmin(${index})">Remove</button>`;
-        div.innerHTML = info;
-        adminList.appendChild(div);
-    });
-
-    sellers.forEach((s,index)=>{
-        const div = document.createElement("div");
-        div.innerHTML = `${s.user} <button onclick="removeSeller(${index})">Remove</button>`;
-        sellerList.appendChild(div);
-    });
+function deliver(i) {
+  orders[i].status = "Delivered";
+  localStorage.setItem("orders", JSON.stringify(orders));
+  location.reload();
 }
 
-// Add / Remove Admin
-function addAdmin(){
-    const user=document.getElementById("newAdminUser").value.trim();
-    const pass=document.getElementById("newAdminPass").value.trim();
-    if(!user||!pass){ alert("Fill both fields!"); return; }
-    let admins = JSON.parse(localStorage.getItem("admins"))||[];
-    if(admins.find(a=>a.user===user)){ alert("Admin exists!"); return; }
-    admins.push({user, pass});
-    localStorage.setItem("admins", JSON.stringify(admins));
-    loadUsers();
+function logout() {
+  localStorage.clear();
+  location.href = "buyer-login.html";
 }
-function removeAdmin(index){
-    let admins = JSON.parse(localStorage.getItem("admins"))||[];
-    if(admins[index].user===currentAdmin){ alert("Cannot remove yourself!"); return; }
-    if(confirm(`Remove admin: ${admins[index].user}?`)){
-        admins.splice(index,1);
-        localStorage.setItem("admins", JSON.stringify(admins));
-        loadUsers();
-    }
-}
-
-// Add / Remove Seller
-function addSeller(){
-    const user=document.getElementById("newSellerUser").value.trim();
-    const pass=document.getElementById("newSellerPass").value.trim();
-    if(!user||!pass){ alert("Fill both fields!"); return; }
-    let sellers = JSON.parse(localStorage.getItem("sellers"))||[];
-    if(sellers.find(s=>s.user===user)){ alert("Seller exists!"); return; }
-    sellers.push({user, pass});
-    localStorage.setItem("sellers", JSON.stringify(sellers));
-    loadUsers();
-}
-function removeSeller(index){
-    let sellers = JSON.parse(localStorage.getItem("sellers"))||[];
-    const sellerToRemove = sellers[index].user;
-    if(confirm(`Remove seller: ${sellerToRemove}? This will also delete their accounts.`)){
-        sellers.splice(index,1);
-        localStorage.setItem("sellers", JSON.stringify(sellers));
-        let accounts = JSON.parse(localStorage.getItem("sellerAccounts"))||[];
-        accounts = accounts.filter(a => a.seller!==sellerToRemove);
-        localStorage.setItem("sellerAccounts", JSON.stringify(accounts));
-        loadUsers();
-    }
-}
-
-// Initialize user list
-loadUsers();
 </script>
 </body>
 </html>
