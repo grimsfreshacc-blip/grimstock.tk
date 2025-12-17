@@ -1,37 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sign Up</title>
+  <title>Sign Up - GrimStock</title>
   <link rel="stylesheet" href="style.css">
   <script src="js/auth.js"></script>
+  <script src="js/roles.js"></script>
 </head>
 <body>
+
+<header>
+  <div class="logo">GrimStock</div>
+</header>
+
 <h2>Sign Up</h2>
-<input id="user" placeholder="Username">
-<input id="pass" placeholder="Password" type="password">
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
 <select id="role">
   <option value="buyer">Buyer</option>
   <option value="seller">Seller</option>
 </select>
 <button onclick="signup()">Sign Up</button>
-<p>Already have an account? <a href="buyer-login.html">Login</a></p>
 
 <script>
 function signup() {
-  const u = document.getElementById("user").value.trim();
-  const p = document.getElementById("pass").value.trim();
-  const r = document.getElementById("role").value;
-  if(!u||!p){ alert("Fill all fields"); return; }
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
 
-  let buyers = JSON.parse(localStorage.getItem("buyers")||"[]");
-  let sellers = JSON.parse(localStorage.getItem("sellers")||"[]");
-  if(buyers.find(b=>b.user===u)||sellers.find(s=>s.user===u)||OWNERS.includes(u)){ alert("Username exists"); return; }
+  if(!user || !pass){ alert("Fill all fields"); return; }
 
-  if(r==="buyer"){ buyers.push({user:u,pass:p}); localStorage.setItem("buyers",JSON.stringify(buyers)); }
-  else if(r==="seller"){ sellers.push({user:u,pass:p}); localStorage.setItem("sellers",JSON.stringify(sellers)); }
-
-  alert("Account created! Login now."); location.href="buyer-login.html";
+  if(role==="buyer"){
+    let buyers = getBuyers();
+    if(buyers.find(b=>b.username===user)){ alert("Username exists"); return; }
+    buyers.push({username:user,password:pass});
+    saveBuyers(buyers);
+    saveSession(user,"buyer");
+  } else if(role==="seller"){
+    let sellers = getSellers();
+    if(sellers.find(b=>b.username===user)){ alert("Username exists"); return; }
+    sellers.push({username:user,password:pass});
+    saveSellers(sellers);
+    saveSession(user,"seller");
+  }
+  alert("Sign up successful!");
+  window.location.href = "index.html";
 }
 </script>
+
 </body>
 </html>
