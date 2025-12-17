@@ -8,84 +8,40 @@
 </head>
 <body>
 
-<!-- Header -->
 <header>
     <div class="logo">GrimStock</div>
     <nav>
-        <a href="#home">Home</a>
-        <a href="#products">Products</a>
-        <a href="#support">Support</a>
+        <a href="index.html">Home</a>
+        <a href="seller-login.html">Seller Login</a>
+        <a href="admin-login.html">Admin Login</a>
     </nav>
 </header>
 
-<!-- Hero Section -->
-<section class="hero" id="home">
-    <h1>Premium Gaming Accounts</h1>
-    <p>Secure checkout via Cash App • Live Support</p>
-    <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Browse Accounts</button>
-</section>
-
-<!-- Products Section -->
-<section class="products-section" id="products">
+<section class="products-section">
     <h2>Available Accounts</h2>
-    <div class="products-grid">
-        <!-- Example Product -->
-        <div class="product-card">
-            <img src="images/locker1.jpg" alt="Locker 1">
-            <h3>Wildcat Dark Skully</h3>
-            <p class="price">$250</p>
-            <button class="view-btn"
-                data-img="images/locker1.jpg"
-                data-title="Wildcat Dark Skully"
-                data-price="$250"
-                data-desc="This account has 265 skins.">
-                View
-            </button>
-        </div>
-        <!-- Add more products here -->
+    <div class="products-grid" id="productsGrid">
+        <!-- Products loaded dynamically -->
     </div>
 </section>
 
-<!-- Modal -->
+<!-- Product Modal -->
 <div id="productModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <img id="modalImage" src="" alt="">
         <h3 id="modalTitle"></h3>
         <p id="modalDesc"></p>
-        <p id="modalPrice"></p>
-
-        <!-- Trusted Seller Section -->
-        <div class="trusted-seller">
-            <h4>Trusted Seller</h4>
-            <p>✅ Verified accounts • ✅ Secure checkout • ✅ Fast delivery</p>
-        </div>
-
-        <!-- Admin Note (manual mark) -->
-        <div class="admin-note">
-            <strong>Admin Note:</strong>
-            <p id="adminNote">Mark manually after delivery.</p>
-        </div>
-
-        <!-- Order ID & Status -->
-        <div class="order-info">
-            <p>🆔 Order ID: <span id="orderId"></span></p>
-            <p>⏳ Status: <span id="orderStatus">Pending</span></p>
-            <button id="markDeliveredBtn" class="mark-btn">Mark Delivered</button>
-        </div>
-
-        <!-- Fake Receipt Confirmation -->
-        <div class="fake-receipt">
-            <h4>Confirmation Page</h4>
-            <p>Thank you for purchasing! Screenshot this for your records.</p>
-        </div>
-
-        <a id="purchaseLink" class="purchase-btn" href="https://cash.app/$YourCashTag" target="_blank">Purchase via CashApp</a>
+        <p class="price" id="modalPrice"></p>
+        <p>🆔 Order ID: <span id="orderId"></span></p>
+        <p>⏳ Status: <span id="orderStatus"></span></p>
+        <a id="purchaseLink" href="https://cash.app/$YOURCASHAPP" target="_blank">
+            <button>Purchase via CashApp</button>
+        </a>
+        <button id="markDeliveredBtn">Mark Delivered (Admin Only)</button>
     </div>
 </div>
 
-<!-- Tawk.to Support -->
-<!--Start of Tawk.to Script-->
+<!-- Tawk.to Script -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -97,20 +53,41 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<!--End of Tawk.to Script-->
 
 <script>
-// Generate random Order ID
-function generateOrderID() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let id = '';
-    for (let i = 0; i < 8; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-}
+// Buyer Script
+const productsGrid = document.getElementById('productsGrid');
 
-// Modal Script
+// Default products
+let defaultProducts = [
+    { img: "images/locker1.jpg", title: "Wildcat Dark Skully", price: "$250", desc: "This account has 265 skins." },
+    { img: "images/locker2.jpg", title: "Phantom Royale", price: "$180", desc: "150 skins + 50 emotes." }
+];
+
+// Load seller accounts too
+let sellerAccounts = JSON.parse(localStorage.getItem("sellerAccounts")) || [];
+const allProducts = defaultProducts.concat(sellerAccounts);
+
+// Generate product cards
+allProducts.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+        <img src="${p.img}" alt="${p.title}">
+        <h3>${p.title}</h3>
+        <p class="price">${p.price}</p>
+        <button class="view-btn"
+            data-img="${p.img}"
+            data-title="${p.title}"
+            data-price="${p.price}"
+            data-desc="${p.desc}">
+            View
+        </button>
+    `;
+    productsGrid.appendChild(card);
+});
+
+// Modal logic
 const modal = document.getElementById('productModal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
@@ -120,29 +97,69 @@ const closeBtn = document.querySelector('.close');
 const orderIdElem = document.getElementById('orderId');
 const orderStatusElem = document.getElementById('orderStatus');
 const markDeliveredBtn = document.getElementById('markDeliveredBtn');
+const purchaseBtn = document.getElementById('purchaseLink');
 
-document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        modalImage.src = btn.dataset.img;
-        modalTitle.textContent = btn.dataset.title;
-        modalDesc.textContent = btn.dataset.desc;
-        modalPrice.textContent = btn.dataset.price;
-        orderIdElem.textContent = generateOrderID();
-        orderStatusElem.textContent = 'Pending';
+// Generate order ID
+function generateOrderID() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let id = '';
+    for (let i = 0; i < 8; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+    return id;
+}
+
+const adminKeys = ["admin123","mod456","super789"]; // Admin keys for buyer modal
+
+document.addEventListener('click', e => {
+    if(e.target && e.target.classList.contains('view-btn')){
+        const title = e.target.dataset.title;
+        const price = e.target.dataset.price;
+        const img = e.target.dataset.img;
+        const desc = e.target.dataset.desc;
+
+        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
+        let order = orders.find(o => o.title === title);
+        let orderID = order ? order.orderId : generateOrderID();
+        let status = order ? order.status : 'Pending';
+
+        modalImage.src = img;
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modalPrice.textContent = price;
+        orderIdElem.textContent = orderID;
+        orderStatusElem.textContent = status;
         modal.style.display = 'block';
-    });
+
+        purchaseBtn.onclick = () => {
+            if(!order){ // Only save if not purchased
+                orders.push({orderId: orderID, title, price, status:"Pending", screenshotStatus:"❌"});
+                localStorage.setItem('grimOrders', JSON.stringify(orders));
+                alert("Order saved! After payment, send proof in support chat.");
+            }
+            return true;
+        };
+    }
 });
 
-// Close modal
 closeBtn.onclick = () => modal.style.display = 'none';
-window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; }
+window.onclick = e => { if(e.target == modal) modal.style.display = 'none'; }
 
-// Admin mark delivered button
 markDeliveredBtn.addEventListener('click', () => {
-    orderStatusElem.textContent = 'Delivered';
-    alert('Order marked as Delivered!');
+    let key = prompt("Enter admin key:");
+    if(adminKeys.includes(key)){
+        orderStatusElem.textContent = 'Delivered';
+        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
+        let index = orders.findIndex(o => o.orderId === orderIdElem.textContent);
+        if(index>=0){ orders[index].status='Delivered'; localStorage.setItem('grimOrders', JSON.stringify(orders)); }
+        alert("Order marked as Delivered!");
+    } else alert("Unauthorized!");
 });
-</script>
 
+// Update status every second
+setInterval(()=>{
+    let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
+    let order = orders.find(o => o.orderId === orderIdElem.textContent);
+    if(order) orderStatusElem.textContent = order.status;
+},1000);
+</script>
 </body>
 </html>
