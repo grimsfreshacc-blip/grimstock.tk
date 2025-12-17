@@ -1,50 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seller Dashboard</title>
-<link rel="stylesheet" href="style.css">
+  <title>Seller Dashboard</title>
 </head>
 <body>
-<script>
-if(!localStorage.getItem("sellerLoggedIn")){
-    alert("Login first!");
-    window.location.href="seller-login.html";
-}
-</script>
 
-<header>
 <h2>Seller Dashboard</h2>
 <button onclick="logout()">Logout</button>
-</header>
 
-<section class="post-account">
-<h3>Post a New Account</h3>
-<input type="text" id="accountTitle" placeholder="Account Title">
-<input type="text" id="accountPrice" placeholder="Price">
-<input type="text" id="accountDesc" placeholder="Description">
-<input type="text" id="accountImg" placeholder="Image URL">
-<button onclick="postAccount()">Post Account</button>
-</section>
+<input id="title" placeholder="Title">
+<input id="desc" placeholder="Description">
+<button onclick="post()">Post Listing</button>
 
 <script>
-function logout(){
-    localStorage.removeItem("sellerLoggedIn");
-    window.location.href="seller-login.html";
+if (localStorage.getItem("role") !== "seller") {
+  alert("Access denied");
+  location.href = "buyer-login.html";
 }
 
-function postAccount(){
-    const title=document.getElementById("accountTitle").value;
-    const price=document.getElementById("accountPrice").value;
-    const desc=document.getElementById("accountDesc").value;
-    const img=document.getElementById("accountImg").value;
-    if(!title||!price||!desc||!img){ alert("Fill all fields!"); return; }
-    const seller=localStorage.getItem("sellerLoggedIn");
-    let accounts=JSON.parse(localStorage.getItem("sellerAccounts"))||[];
-    accounts.push({title,price,desc,img,seller});
-    localStorage.setItem("sellerAccounts",JSON.stringify(accounts));
-    alert("Account posted successfully!");
+function post() {
+  let products = JSON.parse(localStorage.getItem("products") || "[]");
+  products.push({
+    id: crypto.randomUUID(),
+    title: title.value,
+    desc: desc.value,
+    seller: localStorage.getItem("loggedUser")
+  });
+  localStorage.setItem("products", JSON.stringify(products));
+  alert("Posted");
+}
+
+function logout() {
+  localStorage.clear();
+  location.href = "buyer-login.html";
 }
 </script>
 </body>
