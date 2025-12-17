@@ -31,33 +31,12 @@ products.forEach((p, index) => {
         <div class="product-content">
             <h4>${p.name}</h4>
             <div class="price">$${p.price}</div>
-            <button class="buy-btn">View</button>
+            <button class="view-btn" data-index="${index}">View</button>
         </div>
     `;
 
     container.appendChild(card);
 });
 
-/* Open product details */
-document.addEventListener("click", (e) => {
-    const card = e.target.closest(".product-card");
-    if (!card) return;
-
-    const product = products[card.dataset.index];
-
-    document.getElementById("detail-img").src = product.image;
-    document.getElementById("detail-name").textContent = product.name;
-    document.getElementById("detail-desc").textContent = product.description;
-    document.getElementById("detail-price").textContent = `$${product.price}`;
-
-    const cashappLink = `https://cash.app/${CASHAPP_TAG.replace("$","")}/${product.price}`;
-    const buyBtn = document.getElementById("cashapp-buy");
-
-    buyBtn.href = cashappLink;
-
-    document.getElementById("details-modal").style.display = "flex";
-});
-
-function closeDetails() {
-    document.getElementById("details-modal").style.display = "none";
-}
+/* OPEN DETAILS (CARD OR BUTTON) */
+document
