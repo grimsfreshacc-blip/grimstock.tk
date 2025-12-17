@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Buyer Login - GrimStock</title>
   <link rel="stylesheet" href="style.css">
   <script src="js/auth.js"></script>
+  <script src="js/roles.js"></script>
 </head>
 <body>
-<h2>Login</h2>
-<input id="user" placeholder="Username">
-<input id="pass" placeholder="Password" type="password">
+
+<header>
+  <div class="logo">GrimStock</div>
+</header>
+
+<h2>Buyer Login</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
 <button onclick="login()">Login</button>
 <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
 
 <script>
 function login() {
-  const u = document.getElementById("user").value.trim();
-  const p = document.getElementById("pass").value.trim();
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
 
-  let buyers = JSON.parse(localStorage.getItem("buyers") || "[]");
-  let sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
-  let admins = JSON.parse(localStorage.getItem("admins") || "[]");
-
-  if(OWNERS.includes(u)) { saveSession(u,"owner"); location.href="owner.html"; return; }
-
-  if(admins.find(a=>a.user===u && a.pass===p)) { saveSession(u,"admin"); location.href="admin.html"; return; }
-  if(sellers.find(s=>s.user===u && s.pass===p)) { saveSession(u,"seller"); location.href="seller-dashboard.html"; return; }
-  if(buyers.find(b=>b.user===u && b.pass===p)) { saveSession(u,"buyer"); location.href="index.html"; return; }
-
-  alert("Invalid login");
+  let buyers = getBuyers();
+  const match = buyers.find(b => b.username === user && b.password === pass);
+  if(match){
+    saveSession(user,"buyer");
+    alert("Login successful!");
+    window.location.href = "index.html";
+  } else alert("Invalid credentials!");
 }
 </script>
+
 </body>
 </html>
