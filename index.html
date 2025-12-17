@@ -1,175 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrimStock</title>
-<link rel="stylesheet" href="style.css">
+  <title>Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <div class="logo">GrimStock</div>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="seller-login.html">Seller Login</a>
-        <a href="admin-login.html">Admin Login</a>
-    </nav>
-</header>
+<h1>Store</h1>
+<button onclick="logout()">Logout</button>
 
-<section class="products-section">
-    <h2>Available Accounts</h2>
-    <div class="products-grid" id="productsGrid"></div>
-</section>
-
-<!-- Product Modal -->
-<div id="productModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <img id="modalImage" src="" alt="">
-        <h3 id="modalTitle"></h3>
-        <p id="modalDesc"></p>
-        <p class="price" id="modalPrice"></p>
-        <p>🆔 Order ID: <span id="orderId"></span></p>
-        <p>⏳ Status: <span id="orderStatus"></span></p>
-        <p>📷 Screenshot: <span id="screenshotStatus"></span></p>
-        <a id="purchaseLink" href="https://cash.app/$YOURCASHAPP" target="_blank">
-            <button>Purchase via CashApp</button>
-        </a>
-        <button id="markDeliveredBtn">Mark Delivered (Admin Only)</button>
-        <button id="markScreenshotBtn">Mark Screenshot Received (Admin Only)</button>
-    </div>
-</div>
-
-<!-- Tawk.to -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+<div id="products"></div>
 
 <script>
-// Buyer Script
-const productsGrid = document.getElementById('productsGrid');
-let defaultProducts = [
-    { img: "images/locker1.jpg", title: "Wildcat Dark Skully", price: "$250", desc: "This account has 265 skins." },
-    { img: "images/locker2.jpg", title: "Phantom Royale", price: "$180", desc: "150 skins + 50 emotes." }
-];
-let sellerAccounts = JSON.parse(localStorage.getItem("sellerAccounts")) || [];
-const allProducts = defaultProducts.concat(sellerAccounts);
-
-// Generate product cards
-allProducts.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `
-        <img src="${p.img}" alt="${p.title}">
-        <h3>${p.title}</h3>
-        <p class="price">${p.price}</p>
-        <button class="view-btn"
-            data-img="${p.img}"
-            data-title="${p.title}"
-            data-price="${p.price}"
-            data-desc="${p.desc}">
-            View
-        </button>
-    `;
-    productsGrid.appendChild(card);
-});
-
-// Modal logic
-const modal = document.getElementById('productModal');
-const modalImage = document.getElementById('modalImage');
-const modalTitle = document.getElementById('modalTitle');
-const modalDesc = document.getElementById('modalDesc');
-const modalPrice = document.getElementById('modalPrice');
-const closeBtn = document.querySelector('.close');
-const orderIdElem = document.getElementById('orderId');
-const orderStatusElem = document.getElementById('orderStatus');
-const screenshotElem = document.getElementById('screenshotStatus');
-const markDeliveredBtn = document.getElementById('markDeliveredBtn');
-const markScreenshotBtn = document.getElementById('markScreenshotBtn');
-const purchaseBtn = document.getElementById('purchaseLink');
-const adminKeys = ["admin123","mod456","super789"];
-
-function generateOrderID() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let id = '';
-    for (let i = 0; i < 8; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
-    return id;
+if (localStorage.getItem("role") !== "buyer") {
+  alert("Login required");
+  location.href = "buyer-login.html";
 }
 
-document.addEventListener('click', e => {
-    if(e.target && e.target.classList.contains('view-btn')){
-        const title = e.target.dataset.title;
-        const price = e.target.dataset.price;
-        const img = e.target.dataset.img;
-        const desc = e.target.dataset.desc;
+const products = JSON.parse(localStorage.getItem("products") || "[]");
+const el = document.getElementById("products");
 
-        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
-        let order = orders.find(o => o.title === title);
-        let orderID = order ? order.orderId : generateOrderID();
-        let status = order ? order.status : 'Pending';
-        let screenshotStatus = order ? order.screenshotStatus : '❌';
-
-        modalImage.src = img;
-        modalTitle.textContent = title;
-        modalDesc.textContent = desc;
-        modalPrice.textContent = price;
-        orderIdElem.textContent = orderID;
-        orderStatusElem.textContent = status;
-        screenshotElem.textContent = screenshotStatus;
-        modal.style.display = 'block';
-
-        purchaseBtn.onclick = () => {
-            if(!order){ // save order if not exists
-                orders.push({orderId: orderID, title, price, status:"Pending", screenshotStatus:"❌"});
-                localStorage.setItem('grimOrders', JSON.stringify(orders));
-                alert("Order saved! After payment, send proof in support chat.");
-            }
-            return true;
-        };
-    }
+products.forEach(p => {
+  el.innerHTML += `
+    <div class="card">
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <button onclick="buy('${p.id}')">Purchase</button>
+    </div>
+  `;
 });
 
-closeBtn.onclick = () => modal.style.display = 'none';
-window.onclick = e => { if(e.target == modal) modal.style.display = 'none'; }
+function buy(id) {
+  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+  orders.push({
+    id: "ORD-" + Math.random().toString(36).slice(2,8),
+    product: id,
+    buyer: localStorage.getItem("loggedUser"),
+    status: "Pending"
+  });
+  localStorage.setItem("orders", JSON.stringify(orders));
+  alert("Order created. Pay via CashApp & open support chat.");
+}
 
-markDeliveredBtn.addEventListener('click', () => {
-    let key = prompt("Enter admin key:");
-    if(adminKeys.includes(key)){
-        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
-        let index = orders.findIndex(o => o.orderId === orderIdElem.textContent);
-        if(index>=0){ orders[index].status='Delivered'; localStorage.setItem('grimOrders', JSON.stringify(orders)); }
-        alert("Order marked as Delivered!");
-    } else alert("Unauthorized!");
-});
-
-markScreenshotBtn.addEventListener('click', () => {
-    let key = prompt("Enter admin key:");
-    if(adminKeys.includes(key)){
-        let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
-        let index = orders.findIndex(o => o.orderId === orderIdElem.textContent);
-        if(index>=0){ orders[index].screenshotStatus='✅'; localStorage.setItem('grimOrders', JSON.stringify(orders)); }
-        alert("Screenshot marked!");
-    } else alert("Unauthorized!");
-});
-
-// Auto update modal status
-setInterval(()=>{
-    let orders = JSON.parse(localStorage.getItem('grimOrders')) || [];
-    let order = orders.find(o => o.orderId === orderIdElem.textContent);
-    if(order){
-        orderStatusElem.textContent = order.status;
-        screenshotElem.textContent = order.screenshotStatus;
-    }
-},1000);
+function logout() {
+  localStorage.clear();
+  location.href = "buyer-login.html";
+}
 </script>
 </body>
 </html>
