@@ -18,9 +18,9 @@
 
 <script>
 function signup() {
-  const u=user.value.trim();
-  const p=pass.value.trim();
-  const r=role.value;
+  const u = document.getElementById("user").value.trim();
+  const p = document.getElementById("pass").value.trim();
+  const r = document.getElementById("role").value;
   if(!u||!p){ alert("Fill all fields"); return; }
 
   let buyers = JSON.parse(localStorage.getItem("buyers")||"[]");
