@@ -14,8 +14,8 @@
 
 <script>
 function login() {
-  const u = user.value.trim();
-  const p = pass.value.trim();
+  const u = document.getElementById("user").value.trim();
+  const p = document.getElementById("pass").value.trim();
 
   let buyers = JSON.parse(localStorage.getItem("buyers") || "[]");
   let sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
