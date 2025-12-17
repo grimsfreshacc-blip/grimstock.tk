@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Store</title>
+  <title>GrimStock Store</title>
   <link rel="stylesheet" href="style.css">
   <script src="js/auth.js"></script>
   <script src="js/roles.js"></script>
 </head>
 <body>
-<h1>Store</h1>
-<div>
-  <span id="loginStatus"></span>
-  <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
-  <a id="loginLink" href="buyer-login.html" style="display:none;">Login / Sign Up</a>
-</div>
 
-<div id="products"></div>
+<!-- Header -->
+<header>
+  <div class="logo">GrimStock</div>
+  <nav>
+    <a href="#products">Products</a>
+    <a href="#support">Support</a>
+    <span id="loginStatus"></span>
+    <a id="loginLink" href="buyer-login.html" style="display:none;">Login / Sign Up</a>
+    <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<!-- Products Section -->
+<h1 id="products">Products</h1>
+<div id="productsGrid"></div>
 
 <!-- Modal -->
-<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);color:#fff;justify-content:center;align-items:center;overflow:auto;">
-  <div style="background:#111;padding:20px;border:1px solid #fff;max-width:500px;margin:auto;">
-    <span style="float:right;cursor:pointer;" onclick="closeModal()">X</span>
+<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);color:#fff;justify-content:center;align-items:center;overflow:auto;z-index:1000;">
+  <div style="background:#1c1c1c;padding:20px;border-radius:8px;border:1px solid #444;max-width:500px;width:90%;text-align:center;">
+    <span style="float:right;cursor:pointer;font-weight:bold;font-size:20px;" onclick="closeModal()">X</span>
     <h2 id="modalTitle"></h2>
-    <img id="modalImg" src="" style="width:200px;margin:10px 0;">
+    <img id="modalImg" src="" style="width:200px;height:200px;object-fit:cover;border-radius:4px;margin:10px 0;">
     <p id="modalDesc"></p>
     <p id="modalPrice"></p>
     <button id="modalPurchase">Purchase via CashApp</button>
   </div>
 </div>
+
+<!-- Bottom-right Support Button -->
+<a id="support" href="javascript:void(0);" style="position:fixed;bottom:20px;right:20px;background:#E63946;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none;z-index:1001;" onclick="openTawk()">Support</a>
 
 <!-- Tawk.to Widget -->
 <script type="text/javascript">
@@ -39,8 +50,10 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
+function openTawk(){ Tawk_API.maximize ? Tawk_API.maximize() : alert("Support chat loading..."); }
 </script>
 
+<!-- Products Script -->
 <script>
 let allProducts = [];
 
@@ -52,17 +65,16 @@ if(getRole()==="buyer"){
   document.getElementById("loginLink").style.display = "inline-block";
 }
 
-// Load products
 fetch('products.json')
   .then(res=>res.json())
   .then(products=>{
     allProducts = products;
-    const el=document.getElementById("products");
-    el.innerHTML = ''; // clear previous
+    const el=document.getElementById("productsGrid");
+    el.innerHTML = '';
     products.forEach(p=>{
       el.innerHTML+=`<div class="card">
         <h3>${p.title}</h3>
-        <img src="${p.img}" style="width:150px">
+        <img src="${p.img}" style="width:180px;height:180px;object-fit:cover;">
         <p>${p.price}</p>
         <button onclick='viewProduct("${p.id}")'>View</button>
       </div>`;
@@ -100,5 +112,6 @@ function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 </script>
+
 </body>
 </html>
