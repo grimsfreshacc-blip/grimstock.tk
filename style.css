@@ -1,150 +1,204 @@
-/* Reset */
+/* --- Reset & Base --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-/* Body & fonts */
-body {
     font-family: 'Arial', sans-serif;
-    background: #0f0f0f;
-    color: #fff;
 }
 
-/* Header */
+body {
+    background-color: #0f0f0f;
+    color: #fff;
+    line-height: 1.6;
+}
+
+/* --- Header --- */
 header {
     display: flex;
     justify-content: space-between;
-    padding: 20px 50px;
-    background: #111;
     align-items: center;
+    padding: 20px 50px;
+    background-color: #111;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 header .logo {
-    font-size: 24px;
+    font-size: 1.8rem;
     font-weight: bold;
-    color: #ff3c3c;
+    color: #ff2d2d;
 }
 
 header nav a {
     color: #fff;
-    margin-left: 20px;
     text-decoration: none;
+    margin-left: 25px;
+    transition: color 0.3s;
 }
 
 header nav a:hover {
-    color: #ff3c3c;
+    color: #ff2d2d;
 }
 
-/* Hero section */
+/* --- Hero --- */
 .hero {
     text-align: center;
-    padding: 100px 20px;
-    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    padding: 120px 20px 80px;
+    background: linear-gradient(to bottom, #111, #1a1a1a);
 }
 
 .hero h1 {
-    font-size: 48px;
-    color: #fff;
+    font-size: 3rem;
+    margin-bottom: 20px;
 }
 
 .hero p {
-    margin-top: 20px;
-    font-size: 18px;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
 }
 
-.hero .buttons {
-    margin-top: 30px;
-}
-
-.btn-primary, .btn-secondary {
-    padding: 12px 30px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.hero .buttons a {
     text-decoration: none;
-    color: #fff;
+    padding: 12px 25px;
+    margin: 0 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-weight: bold;
 }
 
 .btn-primary {
-    background-color: #ff3c3c;
+    background-color: #ff2d2d;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #ff4d4d;
 }
 
 .btn-secondary {
-    background-color: #222;
-    border: 1px solid #ff3c3c;
+    background-color: #333;
+    color: #fff;
 }
 
-/* Features */
+.btn-secondary:hover {
+    background-color: #555;
+}
+
+/* --- Features --- */
 #features {
     display: flex;
-    justify-content: space-around;
-    padding: 50px 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 60px 20px;
     text-align: center;
+}
+
+.feature {
+    flex: 1 1 250px;
+    background-color: #1a1a1a;
+    margin: 15px;
+    padding: 30px 20px;
+    border-radius: 10px;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    background-color: #222;
 }
 
 .feature h3 {
-    margin-bottom: 10px;
-    color: #ff3c3c;
+    margin-bottom: 15px;
+    color: #ff2d2d;
 }
 
-/* Products Grid */
+/* --- Products Grid --- */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 40px 50px;
+    gap: 25px;
+    padding: 50px 20px;
 }
 
 .product-card {
-    background: #1a1a1a;
+    background-color: #1a1a1a;
     border-radius: 10px;
-    padding: 20px;
-    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(255, 45, 45, 0.5);
 }
 
 .product-card img {
     width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    display: block;
 }
 
-.product-card h4 {
+.product-card .product-content {
+    padding: 15px;
+}
+
+.product-card .product-content h4 {
+    font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #fff;
 }
 
-.product-card p {
+.product-card .product-content p {
+    font-size: 0.9rem;
     margin-bottom: 15px;
-    color: #ff3c3c;
+    color: #ccc;
+}
+
+.product-card .price {
     font-weight: bold;
+    color: #ff2d2d;
+    font-size: 1.1rem;
 }
 
-.product-card button {
-    background: #ff3c3c;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
+/* Featured badge */
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff2d2d;
     color: #fff;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 5px;
 }
 
-.product-card button:hover {
-    background: #ff1a1a;
+/* --- Sections --- */
+section {
+    padding: 80px 20px;
 }
 
-/* About & Contact */
-#about, #contact {
-    padding: 50px;
+section h2 {
     text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #ff2d2d;
 }
 
-/* Footer */
+section p {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+}
+
+/* --- Footer --- */
 footer {
     text-align: center;
-    padding: 20px;
-    background: #111;
-    color: #888;
+    padding: 25px 20px;
+    background-color: #111;
+    color: #aaa;
+}
+
+/* --- Smooth Scroll --- */
+html {
+    scroll-behavior: smooth;
 }
