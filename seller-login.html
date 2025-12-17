@@ -15,15 +15,14 @@
 </section>
 
 <script>
-const sellers = [
-    {user:"seller1", pass:"abc123"},
-    {user:"seller2", pass:"xyz456"}
-];
+if(!localStorage.getItem("sellers")){ localStorage.setItem("sellers", JSON.stringify([])); }
+function getSellers(){ return JSON.parse(localStorage.getItem("sellers")); }
 
 document.getElementById("loginBtn").addEventListener("click", () => {
     const username=document.getElementById("username").value;
     const password=document.getElementById("password").value;
-    const found=sellers.find(s=>s.user===username && s.pass===password);
+    const sellers = getSellers();
+    const found = sellers.find(s=>s.user===username && s.pass===password);
     if(found){
         localStorage.setItem("sellerLoggedIn",username);
         window.location.href="seller-dashboard.html";
