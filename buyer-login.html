@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Login</h2>
+<input id="user" placeholder="Username">
+<input id="pass" placeholder="Password" type="password">
+<button onclick="login()">Login</button>
+
+<script>
+function login() {
+  const u = user.value.trim();
+  const p = pass.value.trim();
+
+  let buyers = JSON.parse(localStorage.getItem("buyers") || "[]");
+  let admins = JSON.parse(localStorage.getItem("admins") || "[]");
+  let sellers = JSON.parse(localStorage.getItem("sellers") || "[]");
+
+  if (u === "grim") {
+    localStorage.setItem("loggedUser", u);
+    localStorage.setItem("role", "owner");
+    location.href = "owner.html";
+    return;
+  }
+
+  if (admins.find(a => a.user === u && a.pass === p)) {
+    localStorage.setItem("loggedUser", u);
+    localStorage.setItem("role", "admin");
+    location.href = "admin.html";
+    return;
+  }
+
+  if (sellers.find(s => s.user === u && s.pass === p)) {
+    localStorage.setItem("loggedUser", u);
+    localStorage.setItem("role", "seller");
+    location.href = "seller-dashboard.html";
+    return;
+  }
+
+  if (buyers.find(b => b.user === u && b.pass === p)) {
+    localStorage.setItem("loggedUser", u);
+    localStorage.setItem("role", "buyer");
+    location.href = "index.html";
+    return;
+  }
+
+  alert("Invalid login");
+}
+</script>
+</body>
+</html>
