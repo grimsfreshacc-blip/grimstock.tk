@@ -85,9 +85,9 @@ h2 {
     background: #1a1a1a;
     border-radius: 12px;
     overflow: hidden;
-    cursor: pointer;
     transition: transform 0.2s;
     position: relative;
+    cursor: pointer;
 }
 
 .product-card:hover {
@@ -96,10 +96,13 @@ h2 {
 
 .product-card img {
     width: 100%;
+    display: block;
 }
 
+/* 🔴 FIX: allow card click, isolate button click */
 .product-content {
     padding: 15px;
+    pointer-events: none;
 }
 
 .product-content h4 {
@@ -112,7 +115,7 @@ h2 {
     margin-top: 8px;
 }
 
-/* VIEW BUTTON (FIXED & CLICKABLE) */
+/* VIEW BUTTON (CLICKABLE FIX) */
 .view-btn {
     margin-top: 12px;
     width: 100%;
@@ -123,6 +126,7 @@ h2 {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    pointer-events: auto;
 }
 
 .view-btn:hover {
