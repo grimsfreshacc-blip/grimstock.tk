@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owner Dashboard - GrimStock</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/auth.js"></script>
+  <script src="js/roles.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">GrimStock - Owner</div>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<h2>Owner Dashboard</h2>
+<h3>Admins</h3>
+<div id="adminsList"></div>
+<h3>Sellers</h3>
+<div id="sellersList"></div>
+
+<h3>Add Admin</h3>
+<input type="text" id="newAdmin" placeholder="Username">
+<button onclick="addAdmin()">Add Admin</button>
+
+<h3>Add Seller</h3>
+<input type="text" id="newSeller" placeholder="Username">
+<button onclick="addSeller()">Add Seller</button>
+
+<script>
+if(getRole()!=="owner"){ alert("Access denied"); window.location.href="index.html"; }
+
+function renderLists(){
+  const adminsEl=document.getElementById("adminsList");
+  adminsEl.innerHTML='';
+  getAdmins().forEach(a=>{
+    adminsEl.innerHTML+=`<div>${a.username} <button onclick="removeAdmin('${a.username}')">Remove</button></div>`;
+  });
+
+  const sellersEl=document.getElementById("sellersList");
+  sellersEl.innerHTML='';
+  getSellers().forEach(s=>{
+    sellersEl.innerHTML+=`<div>${s.username} <button onclick="removeSeller('${s.username}')">Remove</button></div>`;
+  });
+}
+
+function addAdmin(){
+  const username=document.getElementById("newAdmin").value;
+  if(!username) return alert("Enter username");
+  let admins = getAdmins();
+  if(admins.find(a=>a.username===username)) return alert("Admin exists");
+  admins.push({username});
+  saveAdmins(admins);
+  renderLists();
+}
+
+function removeAdmin(username){ alert("Owners cannot remove other owners/admins."); }
+
+function addSeller(){
+  const username=document.getElementById("newSeller").value;
+  if(!username) return alert("Enter username");
+  let sellers = getSellers();
+  if(sellers.find(s=>s.username===username)) return alert("Seller exists");
+  sellers.push({username});
+  saveSellers(sellers);
+  renderLists();
+}
+
+function removeSeller(username){
+  let sellers = getSellers();
+  sellers = sellers.filter(s=>s.username!==username);
+  saveSellers(sellers);
+  renderLists();
+}
+
+renderLists();
+</script>
+
+</body>
+</html>
