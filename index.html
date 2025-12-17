@@ -3,48 +3,74 @@
 <head>
   <title>Store</title>
   <link rel="stylesheet" href="style.css">
+  <script src="js/auth.js"></script>
+  <script src="js/roles.js"></script>
 </head>
 <body>
-
 <h1>Store</h1>
 <button onclick="logout()">Logout</button>
 
 <div id="products"></div>
 
+<!-- Modal -->
+<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);color:#fff;justify-content:center;align-items:center;overflow:auto;">
+  <div style="background:#111;padding:20px;border:1px solid #fff;max-width:500px;margin:auto;">
+    <span style="float:right;cursor:pointer;" onclick="closeModal()">X</span>
+    <h2 id="modalTitle"></h2>
+    <img id="modalImg" src="" style="width:200px;margin:10px 0;">
+    <p id="modalDesc"></p>
+    <p id="modalPrice"></p>
+    <button id="modalPurchase">Purchase via CashApp</button>
+  </div>
+</div>
+
+<!-- Tawk.to Widget -->
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
 <script>
-if (localStorage.getItem("role") !== "buyer") {
-  alert("Login required");
-  location.href = "buyer-login.html";
-}
+if(getRole()!=="buyer"){ alert("Login required"); location.href="buyer-login.html"; }
 
-const products = JSON.parse(localStorage.getItem("products") || "[]");
-const el = document.getElementById("products");
-
-products.forEach(p => {
-  el.innerHTML += `
-    <div class="card">
-      <h3>${p.title}</h3>
-      <p>${p.desc}</p>
-      <button onclick="buy('${p.id}')">Purchase</button>
-    </div>
-  `;
-});
-
-function buy(id) {
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-  orders.push({
-    id: "ORD-" + Math.random().toString(36).slice(2,8),
-    product: id,
-    buyer: localStorage.getItem("loggedUser"),
-    status: "Pending"
+fetch('products.json')
+  .then(res=>res.json())
+  .then(products=>{
+    const el=document.getElementById("products");
+    products.forEach(p=>{
+      el.innerHTML+=`<div class="card">
+        <h3>${p.title}</h3>
+        <img src="${p.img}" style="width:150px">
+        <p>${p.price}</p>
+        <button onclick='viewProduct(${JSON.stringify(p)})'>View</button>
+      </div>`;
+    });
   });
-  localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Order created. Pay via CashApp & open support chat.");
+
+function viewProduct(p){
+  document.getElementById("modalTitle").innerText = p.title;
+  document.getElementById("modalDesc").innerText = p.desc;
+  document.getElementById("modalPrice").innerText = "Price: " + p.price;
+  document.getElementById("modalImg").src = p.img;
+  document.getElementById("modalPurchase").onclick = function(){
+    const cashapp = "https://cash.app/$YOURCASHAPP"; // <- replace with your CashApp link
+    alert("Please send payment via CashApp and then screenshot in the support chat!");
+    window.open(cashapp,"_blank");
+  }
+  document.getElementById("modal").style.display = "flex";
 }
 
-function logout() {
-  localStorage.clear();
-  location.href = "buyer-login.html";
+function closeModal(){
+  document.getElementById("modal").style.display="none";
 }
 </script>
 </body>
