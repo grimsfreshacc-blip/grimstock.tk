@@ -8,7 +8,11 @@
 </head>
 <body>
 <h1>Store</h1>
-<button onclick="logout()">Logout</button>
+<div>
+  <span id="loginStatus"></span>
+  <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
+  <a id="loginLink" href="buyer-login.html" style="display:none;">Login / Sign Up</a>
+</div>
 
 <div id="products"></div>
 
@@ -25,7 +29,6 @@
 </div>
 
 <!-- Tawk.to Widget -->
-<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -37,35 +40,57 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<!--End of Tawk.to Script-->
 
 <script>
-if(getRole()!=="buyer"){ alert("Login required"); location.href="buyer-login.html"; }
+let allProducts = [];
+
+// Show login/logout status
+if(getRole()==="buyer"){
+  document.getElementById("loginStatus").innerText = "Logged in as " + getLoggedUser();
+  document.getElementById("logoutBtn").style.display = "inline-block";
+} else {
+  document.getElementById("loginLink").style.display = "inline-block";
+}
 
 fetch('products.json')
   .then(res=>res.json())
   .then(products=>{
+    allProducts = products;
     const el=document.getElementById("products");
     products.forEach(p=>{
       el.innerHTML+=`<div class="card">
         <h3>${p.title}</h3>
         <img src="${p.img}" style="width:150px">
         <p>${p.price}</p>
-        <button onclick='viewProduct(${JSON.stringify(p)})'>View</button>
+        <button onclick='viewProduct("${p.id}")'>View</button>
       </div>`;
     });
   });
 
-function viewProduct(p){
+function viewProduct(id){
+  const p = allProducts.find(prod => prod.id === id);
+  if(!p) return;
+
   document.getElementById("modalTitle").innerText = p.title;
   document.getElementById("modalDesc").innerText = p.desc;
   document.getElementById("modalPrice").innerText = "Price: " + p.price;
   document.getElementById("modalImg").src = p.img;
-  document.getElementById("modalPurchase").onclick = function(){
-    const cashapp = "https://cash.app/$YOURCASHAPP"; // <- replace with your CashApp link
-    alert("Please send payment via CashApp and then screenshot in the support chat!");
-    window.open(cashapp,"_blank");
+
+  const purchaseBtn = document.getElementById("modalPurchase");
+  if(getRole() === "buyer"){ 
+    purchaseBtn.disabled = false;
+    purchaseBtn.onclick = function(){
+      const cashapp = "https://cash.app/$YOURCASHAPP"; // replace with your CashApp link
+      alert("Please send payment via CashApp and then screenshot in the support chat!");
+      window.open(cashapp,"_blank");
+    }
+  } else {
+    purchaseBtn.disabled = true;
+    purchaseBtn.onclick = function(){
+      alert("Please login/sign up to purchase this account!");
+    }
   }
+
   document.getElementById("modal").style.display = "flex";
 }
 
