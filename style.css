@@ -1,216 +1,35 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+* {margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif;}
+body {background:#0e0e0e; color:white;}
+header {display:flex; justify-content:space-between; padding:20px 40px; background:#111; position:sticky; top:0; z-index:10;}
+.logo {font-size:1.6rem; font-weight:bold; color:#ff2d2d;}
+nav a {color:white; margin-left:20px; text-decoration:none;}
+nav a:hover {color:#ff2d2d;}
+.hero {padding:100px 20px; text-align:center; background:linear-gradient(#111,#1a1a1a);}
+.hero h1 {font-size:3rem; margin-bottom:15px;}
+.hero p {margin-bottom:25px; color:#ccc;}
+.btn-primary {background:#ff2d2d; padding:12px 25px; color:white; text-decoration:none; border-radius:6px; font-weight:bold;}
+section {padding:80px 20px;}
+h2 {text-align:center; margin-bottom:40px; color:#ff2d2d;}
+.products-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:25px;}
+.product-card {background:#1a1a1a; border-radius:12px; overflow:hidden; transition:transform 0.2s; position:relative; cursor:pointer;}
+.product-card:hover {transform:translateY(-6px);}
+.product-card img {width:100%; display:block;}
+.product-content {padding:15px; pointer-events:none;}
+.product-content h4 {margin-bottom:8px;}
+.price {color:#ff2d2d; font-weight:bold; margin-top:8px;}
+.view-btn {margin-top:12px; width:100%; padding:10px; background:#222; color:white; border:1px solid #333; border-radius:6px; cursor:pointer; font-weight:bold; pointer-events:auto;}
+.view-btn:hover {background:#333;}
+.badge {position:absolute; top:10px; left:10px; background:#ff2d2d; padding:4px 8px; font-size:12px; border-radius:4px;}
+.modal {display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; z-index:999;}
+.modal-content {background:#1a1a1a; padding:25px; border-radius:12px; width:90%; max-width:420px; text-align:center;}
+.modal-content img {width:100%; border-radius:8px; margin-bottom:15px;}
+.buy-btn {display:block; margin-top:15px; padding:12px; background:#ff2d2d; color:white; text-decoration:none; border-radius:6px; font-weight:bold; text-align:center;}
+.buy-btn:hover {background:#ff4d4d;}
+.warning {margin-top:10px; font-size:0.9rem; color:#ffcc00;}
+.modal-content button {margin-top:15px; width:100%; padding:10px; background:#333; color:white; border:none; border-radius:6px; cursor:pointer;}
+footer {background:#111; padding:20px; text-align:center; color:#888;}
+html {scroll-behavior:smooth;}
 
-body {
-    background: #0e0e0e;
-    color: white;
-}
-
-/* HEADER */
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 40px;
-    background: #111;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.logo {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #ff2d2d;
-}
-
-nav a {
-    color: white;
-    margin-left: 20px;
-    text-decoration: none;
-}
-
-nav a:hover {
-    color: #ff2d2d;
-}
-
-/* HERO */
-.hero {
-    padding: 100px 20px;
-    text-align: center;
-    background: linear-gradient(#111, #1a1a1a);
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    margin-bottom: 25px;
-    color: #ccc;
-}
-
-.btn-primary {
-    background: #ff2d2d;
-    padding: 12px 25px;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-/* SECTIONS */
-section {
-    padding: 80px 20px;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #ff2d2d;
-}
-
-/* PRODUCTS */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-}
-
-.product-card {
-    background: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s;
-    position: relative;
-    cursor: pointer;
-}
-
-.product-card:hover {
-    transform: translateY(-6px);
-}
-
-.product-card img {
-    width: 100%;
-    display: block;
-}
-
-/* 🔴 FIX: allow card click, isolate button click */
-.product-content {
-    padding: 15px;
-    pointer-events: none;
-}
-
-.product-content h4 {
-    margin-bottom: 8px;
-}
-
-.price {
-    color: #ff2d2d;
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-/* VIEW BUTTON (CLICKABLE FIX) */
-.view-btn {
-    margin-top: 12px;
-    width: 100%;
-    padding: 10px;
-    background: #222;
-    color: white;
-    border: 1px solid #333;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    pointer-events: auto;
-}
-
-.view-btn:hover {
-    background: #333;
-}
-
-/* BADGE */
-.badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #ff2d2d;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-}
-
-/* MODAL */
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.modal-content {
-    background: #1a1a1a;
-    padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-}
-
-.modal-content img {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.buy-btn {
-    display: block;
-    margin-top: 15px;
-    padding: 12px;
-    background: #ff2d2d;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.buy-btn:hover {
-    background: #ff4d4d;
-}
-
-.warning {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #ffcc00;
-}
-
-.modal-content button {
-    margin-top: 15px;
-    width: 100%;
-    padding: 10px;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* FOOTER */
-footer {
-    background: #111;
-    padding: 20px;
-    text-align: center;
-    color: #888;
-}
-
-html {
-    scroll-behavior: smooth;
-}
+/* Trusted Seller Section */
+#trusted-seller {padding:40px 20px; text-align:center; background:#111; margin-top:20px;}
+.trusted-badge {border:2px solid #ff2d2d; padding:15px; border-radius:10px; display:inline-block;}
