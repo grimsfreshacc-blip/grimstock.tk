@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head><title>Owner</title></head>
+<head><title>Owner</title><link rel="stylesheet" href="style.css"><script src="js/auth.js"></script><script src="js/roles.js"></script></head>
 <body>
-
 <h1>👑 Owner Dashboard</h1>
 <button onclick="logout()">Logout</button>
 
 <h3>Admins</h3>
-<pre id="admins"></pre>
+<div id="adminList"></div>
 
 <h3>Sellers</h3>
-<pre id="sellers"></pre>
+<div id="sellerList"></div>
+
+<h3>Orders</h3>
+<div id="orderList"></div>
 
 <script>
-const OWNERS = ["grim"];
+requireOwner();
 
-if (!OWNERS.includes(localStorage.getItem("loggedUser"))) {
-  alert("Owners only");
-  location.href = "index.html";
+function loadAdmins(){
+  const el=document.getElementById("adminList");
+  const admins=JSON.parse(localStorage.getItem("admins")||"[]");
+  el.innerHTML="";
+  admins.forEach(a=>{ el.innerHTML+=`<div>${a.user} <button onclick="removeAdmin('${a.user}')">Remove</button></div>`; });
+}
+function removeAdmin(u){
+  let admins=JSON.parse(localStorage.getItem("admins")||"[]");
+  admins=admins.filter(a=>!OWNERS.includes(a.user) && a.user!==u);
+  localStorage.setItem("admins",JSON.stringify(admins));
+  loadAdmins();
 }
 
-admins.textContent = localStorage.getItem("admins");
-sellers.textContent = localStorage.getItem("sellers");
-
-function logout() {
-  localStorage.clear();
-  location.href = "buyer-login.html";
+function loadSellers(){
+  const el=document.getElementById("sellerList");
+  const sellers=JSON.parse(localStorage.getItem("sellers")||"[]");
+  el.innerHTML="";
+  sellers.forEach(s=>{ el.innerHTML+=`<div>${s.user} <button onclick="removeSeller('${s.user}')">Remove</button></div>`; });
 }
+function removeSeller(u){
+  let sellers=JSON.parse(localStorage.getItem("sellers")||"[]");
+  sellers=sellers.filter(s=>s.user!==u);
+  localStorage.setItem("sellers",JSON.stringify(sellers));
+  loadSellers();
+}
+
+function loadOrders(){
+  const el=document.getElementById("orderList");
+  const orders=JSON.parse(localStorage.getItem("orders")||"[]");
+  el.innerHTML="";
+  orders.forEach(o=>{ el.innerHTML+=`<div>${o.id} - ${o.status}</div>`; });
+}
+
+loadAdmins();
+loadSellers();
+loadOrders();
 </script>
 </body>
 </html>
