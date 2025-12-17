@@ -112,6 +112,23 @@ h2 {
     margin-top: 8px;
 }
 
+/* VIEW BUTTON (FIXED & CLICKABLE) */
+.view-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    background: #222;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.view-btn:hover {
+    background: #333;
+}
+
 /* BADGE */
 .badge {
     position: absolute;
@@ -158,6 +175,7 @@ h2 {
     text-decoration: none;
     border-radius: 6px;
     font-weight: bold;
+    text-align: center;
 }
 
 .buy-btn:hover {
