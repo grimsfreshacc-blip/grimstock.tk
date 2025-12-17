@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #0f0f0f;
+    background: #0e0e0e;
     color: white;
 }
 
@@ -18,10 +18,11 @@ header {
     background: #111;
     position: sticky;
     top: 0;
+    z-index: 10;
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #ff2d2d;
 }
@@ -49,7 +50,8 @@ nav a:hover {
 }
 
 .hero p {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #ccc;
 }
 
 .btn-primary {
@@ -58,11 +60,12 @@ nav a:hover {
     color: white;
     text-decoration: none;
     border-radius: 6px;
+    font-weight: bold;
 }
 
-/* PRODUCTS */
+/* SECTIONS */
 section {
-    padding: 70px 20px;
+    padding: 80px 20px;
 }
 
 h2 {
@@ -71,6 +74,7 @@ h2 {
     color: #ff2d2d;
 }
 
+/* PRODUCTS */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -79,9 +83,15 @@ h2 {
 
 .product-card {
     background: #1a1a1a;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
     position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
 }
 
 .product-card img {
@@ -93,37 +103,16 @@ h2 {
 }
 
 .product-content h4 {
-    margin-bottom: 10px;
-}
-
-.product-content p {
-    font-size: 0.9rem;
-    color: #ccc;
+    margin-bottom: 8px;
 }
 
 .price {
-    font-weight: bold;
     color: #ff2d2d;
-    margin: 10px 0;
-}
-
-/* PURCHASE BUTTON */
-.buy-btn {
-    width: 100%;
-    padding: 10px;
-    background: #ff2d2d;
-    border: none;
-    color: white;
     font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-top: 8px;
 }
 
-.buy-btn:hover {
-    background: #ff4d4d;
-}
-
-/* FEATURED BADGE */
+/* BADGE */
 .badge {
     position: absolute;
     top: 10px;
@@ -142,36 +131,54 @@ h2 {
     background: rgba(0,0,0,0.85);
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .modal-content {
     background: #1a1a1a;
     padding: 25px;
-    border-radius: 10px;
+    border-radius: 12px;
     width: 90%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
 }
 
-.modal-content hr {
-    margin: 15px 0;
-    border: 1px solid #333;
+.modal-content img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.buy-btn {
+    display: block;
+    margin-top: 15px;
+    padding: 12px;
+    background: #ff2d2d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.buy-btn:hover {
+    background: #ff4d4d;
+}
+
+.warning {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #ffcc00;
 }
 
 .modal-content button {
     margin-top: 15px;
     width: 100%;
     padding: 10px;
-    background: #ff2d2d;
-    border: none;
+    background: #333;
     color: white;
-    font-weight: bold;
-}
-
-.warning {
-    color: #ffcc00;
-    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 /* FOOTER */
