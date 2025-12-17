@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Seller Dashboard</title>
-</head>
+<head><title>Seller Dashboard</title><link rel="stylesheet" href="style.css"><script src="js/auth.js"></script><script src="js/roles.js"></script></head>
 <body>
-
 <h2>Seller Dashboard</h2>
 <button onclick="logout()">Logout</button>
 
 <input id="title" placeholder="Title">
 <input id="desc" placeholder="Description">
+<input id="price" placeholder="Price">
 <button onclick="post()">Post Listing</button>
 
+<div id="myListings"></div>
+
 <script>
-if (localStorage.getItem("role") !== "seller") {
-  alert("Access denied");
-  location.href = "buyer-login.html";
+requireSeller();
+
+function post(){
+  const t=title.value, d=desc.value, p=price.value;
+  if(!t||!d||!p){ alert("Fill all fields"); return; }
+
+  let products=JSON.parse(localStorage.getItem("products")||"[]");
+  products.push({id:crypto.randomUUID(),title:t,desc:d,price:p,seller:getLoggedUser()});
+  localStorage.setItem("products",JSON.stringify(products));
+  loadListings();
 }
 
-function post() {
-  let products = JSON.parse(localStorage.getItem("products") || "[]");
-  products.push({
-    id: crypto.randomUUID(),
-    title: title.value,
-    desc: desc.value,
-    seller: localStorage.getItem("loggedUser")
+function loadListings(){
+  const el=document.getElementById("myListings");
+  const products=JSON.parse(localStorage.getItem("products")||"[]");
+  el.innerHTML="";
+  products.filter(p=>p.seller===getLoggedUser()).forEach(p=>{
+    el.innerHTML+=`<div class="card">${p.title} - ${p.price}<button onclick="remove('${p.id}')">Remove</button></div>`;
   });
-  localStorage.setItem("products", JSON.stringify(products));
-  alert("Posted");
 }
 
-function logout() {
-  localStorage.clear();
-  location.href = "buyer-login.html";
+function remove(id){
+  let products=JSON.parse(localStorage.getItem("products")||"[]");
+  products=products.filter(p=>p.id!==id);
+  localStorage.setItem("products",JSON.stringify(products));
+  loadListings();
 }
+
+loadListings();
 </script>
 </body>
 </html>
