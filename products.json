@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Rare OG Fortnite Account",
+    "price": "$299.99",
+    "image": "images/fortnite.jpg",
+    "description": "Legendary Fortnite account with Black Knight skin and multiple rare emotes."
+  },
+  {
+    "name": "Discord Nitro Account",
+    "price": "$49.99",
+    "image": "images/discord.jpg",
+    "description": "Premium Discord account with Nitro subscription and server boost perks."
+  },
+  {
+    "name": "Stacked Roblox Account",
+    "price": "$189.99",
+    "image": "images/roblox.jpg",
+    "description": "Premium Roblox account loaded with 50,000 Robux and exclusive limited items."
+  },
+  {
+    "name": "Minecraft Java Premium Account",
+    "price": "$99.99",
+    "image": "images/minecraft.jpg",
+    "description": "Full access Minecraft Java Edition account."
+  }
+]
