@@ -4,7 +4,7 @@ const products = [
     {
         name: "purple skull",
         description: "crazy safe skull dark skully 170 skins OG Skull Trooper | Dark Skully | Masterchief - Matte Black | Thrilldiver | The Reaper | Elite Agent | Cobalt Snowfoot | Blue Striker | OG Ghost Portal | Dark Skully Satchel | 1500VB 15 name changes safe asf lifetime warrenty",
-        price: $299.99,
+        price: 299.99,
         image: "images/fortnite1.jpg",
         featured: true
     },
