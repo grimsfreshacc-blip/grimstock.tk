@@ -19,7 +19,7 @@ const products = [
 
 const container = document.getElementById("products-container");
 
-/* Render products */
+/* Render products dynamically */
 products.forEach((p, index) => {
     const card = document.createElement("div");
     card.className = "product-card";
@@ -37,36 +37,27 @@ products.forEach((p, index) => {
     container.appendChild(card);
 });
 
-/* Attach event listener directly to each button */
-const buttons = document.querySelectorAll(".view-btn");
-
-buttons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        e.stopPropagation(); // prevent card click from interfering
-        const index = btn.dataset.index;
-        const product = products[index];
-
-        document.getElementById("detail-img").src = product.image;
-        document.getElementById("detail-name").textContent = product.name;
-        document.getElementById("detail-desc").textContent = product.description;
-        document.getElementById("detail-price").textContent = `$${product.price}`;
-
-        const cashappLink = `https://cash.app/${CASHAPP_TAG.replace("$","")}/${product.price}`;
-        document.getElementById("cashapp-buy").href = cashappLink;
-
-        document.getElementById("details-modal").style.display = "flex";
-    });
-});
-
-/* Optional: also allow clicking card itself to open modal */
+/* Event delegation: handle all clicks inside container */
 container.addEventListener("click", (e) => {
-    const card = e.target.closest(".product-card");
-    if (!card) return;
+    // If user clicked the "View" button
+    const btn = e.target.closest(".view-btn");
+    if (!btn) return; // Ignore other clicks
 
-    const btn = card.querySelector(".view-btn");
-    if (btn) btn.click();
+    const index = btn.dataset.index;
+    const product = products[index];
+
+    document.getElementById("detail-img").src = product.image;
+    document.getElementById("detail-name").textContent = product.name;
+    document.getElementById("detail-desc").textContent = product.description;
+    document.getElementById("detail-price").textContent = `$${product.price}`;
+
+    const cashappLink = `https://cash.app/${CASHAPP_TAG.replace("$","")}/${product.price}`;
+    document.getElementById("cashapp-buy").href = cashappLink;
+
+    document.getElementById("details-modal").style.display = "flex";
 });
 
+/* Optional: close modal function */
 function closeDetails() {
     document.getElementById("details-modal").style.display = "none";
 }
