@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owner Login - GrimStock</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">GrimStock</div>
+</header>
+
+<h2>Owner Login</h2>
+<input type="text" id="username" placeholder="Owner Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="ownerLogin()">Login</button>
+
+<script>
+function ownerLogin(){
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  // For simplicity, owner password = "ownerpass" (you can change)
+  if(OWNERS.includes(user) && pass==="ownerpass"){
+    saveSession(user,"owner");
+    alert("Owner login successful!");
+    window.location.href="owner-dashboard.html";
+  } else alert("Invalid owner credentials!");
+}
+</script>
+
+</body>
+</html>
