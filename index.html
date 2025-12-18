@@ -1,120 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GrimStock Store</title>
+  <meta charset="UTF-8">
+  <title>GrimStock</title>
   <link rel="stylesheet" href="style.css">
-  <script src="js/auth.js"></script>
-  <script src="js/roles.js"></script>
 </head>
 <body>
 
 <header>
-  <div class="logo">GrimStock</div>
+  <h1>GrimStock</h1>
   <nav>
-    <a href="#products">Products</a>
-    <a href="#support">Support</a>
-    <span id="loginStatus"></span>
-    <a id="loginLink" href="buyer-login.html" style="display:none;">Login / Sign Up</a>
-    <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
+    <a href="index.html">Products</a>
+    <a href="#" onclick="openTawk()">Support</a>
+    <a href="login.html" id="loginBtn">Login</a>
+    <a href="#" id="dashboardBtn" style="display:none;" onclick="goDashboard()">Dashboard</a>
   </nav>
 </header>
 
-<h1 id="products">Products</h1>
-<div id="productsGrid"></div>
-
-<!-- Modal -->
-<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);color:#fff;justify-content:center;align-items:center;overflow:auto;z-index:1000;">
-  <div style="background:#1c1c1c;padding:20px;border-radius:8px;border:1px solid #444;max-width:500px;width:90%;text-align:center;">
-    <span style="float:right;cursor:pointer;font-weight:bold;font-size:20px;" onclick="closeModal()">X</span>
-    <h2 id="modalTitle"></h2>
-    <img id="modalImg" src="" style="width:200px;height:200px;object-fit:cover;border-radius:4px;margin:10px 0;">
-    <p id="modalDesc"></p>
-    <p id="modalPrice"></p>
-    <button id="modalPurchase">Purchase via CashApp</button>
+<section class="products">
+  <div class="card">
+    <img src="images/account1.jpg">
+    <h3>Fortnite Account</h3>
+    <p>Preview only — login to purchase</p>
+    <button onclick="requireLogin()">Purchase</button>
   </div>
-</div>
+</section>
 
-<!-- Support Button -->
-<a id="support" href="javascript:void(0);" style="position:fixed;bottom:20px;right:20px;background:#E63946;color:#fff;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none;z-index:1001;" onclick="openTawk()">Support</a>
-
-<!-- Tawk.to -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-function openTawk() {
-  if (typeof Tawk_API !== "undefined") {
-    if (Tawk_API.maximize) Tawk_API.maximize();
-    else alert("Support chat loading...");
-  } else alert("Support chat initializing...");
-}
-</script>
-
-<script>
-let allProducts = [];
-
-// Login status
-if(getRole() === "buyer") {
-  document.getElementById("loginStatus").innerText = "Logged in as " + getLoggedUser();
-  document.getElementById("logoutBtn").style.display = "inline-block";
-} else {
-  document.getElementById("loginLink").style.display = "inline-block";
-}
-
-// Load products
-fetch('products.json')
-  .then(res => res.json())
-  .then(products => {
-    allProducts = products;
-    const el = document.getElementById("productsGrid");
-    el.innerHTML = '';
-    products.forEach(p => {
-      el.innerHTML += `<div class="card">
-        <h3>${p.title}</h3>
-        <img src="${p.img}" style="width:180px;height:180px;object-fit:cover;">
-        <p>${p.price}</p>
-        <button onclick='viewProduct("${p.id}")'>View</button>
-      </div>`;
-    });
-  });
-
-function viewProduct(id){
-  const p = allProducts.find(prod => prod.id === id);
-  if(!p) return;
-
-  document.getElementById("modalTitle").innerText = p.title;
-  document.getElementById("modalDesc").innerText = p.desc;
-  document.getElementById("modalPrice").innerText = "Price: " + p.price;
-  document.getElementById("modalImg").src = p.img;
-
-  const purchaseBtn = document.getElementById("modalPurchase");
-  if(getRole() === "buyer"){ 
-    purchaseBtn.disabled = false;
-    purchaseBtn.onclick = function(){
-      const cashapp = "https://cash.app/$YOURCASHAPP";
-      alert("Please send payment via CashApp and screenshot in support chat!");
-      window.open(cashapp,"_blank");
-    }
-  } else {
-    purchaseBtn.disabled = true;
-    purchaseBtn.onclick = function(){
-      alert("Please login/sign up to purchase this account!");
-    }
-  }
-
-  document.getElementById("modal").style.display = "flex";
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
-}
-</script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
