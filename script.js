@@ -1,79 +1,31 @@
-const CASHAPP_TAG = "$etfz";
+// Check login state
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-const products = [
-    {
-        name: "purple skull",
-        description: "crazy safe skull dark skully 170 skins OG Skull Trooper | Dark Skully | Masterchief - Matte Black | Thrilldiver | The Reaper | Elite Agent | Cobalt Snowfoot | Blue Striker | OG Ghost Portal | Dark Skully Satchel | 1500VB 15 name changes safe asf lifetime warrenty",
-        price: 299.99,
-        image: "images/fortnite.jpg",
-        featured: true
-    },
-    {
-        name: "wildcat dark skully 265 skins",
-        description: "safe 2 months pdf downloadable mail changeable safe asf clean asf",
-        price: 250,
-        image: "images/discord1.jpg",
-        featured: false
-    }
-];
-
-const container = document.getElementById("products-container");
-
-/* Render products dynamically */
-products.forEach((p, index) => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-
-    card.innerHTML = `
-        ${p.featured ? `<div class="badge">Featured</div>` : ""}
-        <img src="${p.image}">
-        <div class="product-content">
-            <h4>${p.name}</h4>
-            <div class="price">$${p.price}</div>
-            <button class="view-btn" data-index="${index}">View</button>
-        </div>
-    `;
-
-    container.appendChild(card);
+onAuthStateChanged(window.firebaseAuth, user => {
+  if(user){
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("dashboardBtn").style.display = "inline";
+  }
 });
 
-/* Event delegation for dynamically created buttons */
-container.addEventListener("click", (e) => {
-    const btn = e.target.closest(".view-btn");
-    if (!btn) return;
+// Purchase button
+window.requireLogin = () => {
+  const user = window.firebaseAuth.currentUser;
+  if(!user){
+    alert("You must log in to purchase");
+    window.location.href = "login.html";
+  } else {
+    window.open("https://cash.app/$YourCashTag", "_blank");
+  }
+};
 
-    const index = btn.dataset.index;
-    const product = products[index];
+// Go to dashboard based on role (basic for now)
+window.goDashboard = () => {
+  // TODO: connect role system later
+  window.location.href = "dashboard-user.html";
+};
 
-    document.getElementById("detail-img").src = product.image;
-    document.getElementById("detail-name").textContent = product.name;
-    document.getElementById("detail-desc").textContent = product.description;
-    document.getElementById("detail-price").textContent = `$${product.price}`;
-
-    const cashappLink = `https://cash.app/${CASHAPP_TAG.replace("$","")}/${product.price}`;
-    const buyBtn = document.getElementById("cashapp-buy");
-    buyBtn.href = cashappLink;
-
-    document.getElementById("details-modal").style.display = "flex";
-
-    /* Generate order ID for receipt */
-    const orderID = "ORD-" + Math.floor(Math.random()*900000 + 100000);
-    document.getElementById("order-id").textContent = orderID;
-    document.getElementById("order-total").textContent = `$${product.price}`;
-    document.getElementById("order-status").textContent = "Pending";
-    document.getElementById("admin-notes").textContent = "Admin Notes: Verify payment screenshot in support chat.";
-});
-
-/* Close modals */
-function closeDetails() {
-    document.getElementById("details-modal").style.display = "none";
-}
-function closeReceipt() {
-    document.getElementById("receipt-modal").style.display = "none";
-}
-
-/* Optional: when user clicks Cash App, also show receipt modal */
-document.getElementById("cashapp-buy").addEventListener("click", () => {
-    document.getElementById("details-modal").style.display = "none";
-    document.getElementById("receipt-modal").style.display = "flex";
-});
+// Support
+window.openTawk = () => {
+  if(typeof Tawk_API !== "undefined") Tawk_API.maximize();
+};
