@@ -11,20 +11,25 @@
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
+<a href="signup.html">Create Account</a>
 
 <script type="module" src="firebase.js"></script>
-
 <script type="module">
-  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-  window.login = () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+window.login = () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    signInWithEmailAndPassword(window.firebaseAuth, email, password)
-      .then(() => window.location.href = "index.html")
-      .catch(err => alert(err.message));
-  };
+  if(!email || !password){
+    alert("Please enter email and password");
+    return;
+  }
+
+  signInWithEmailAndPassword(window.firebaseAuth, email, password)
+    .then(() => window.location.href = "index.html")
+    .catch(err => alert(err.message));
+};
 </script>
 
 </body>
