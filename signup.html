@@ -7,31 +7,30 @@
 <body class="center">
 
 <h2>Create Account</h2>
-
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Password">
-<select id="role">
-  <option value="user">User</option>
-</select>
 <button onclick="signup()">Sign Up</button>
 
 <script type="module" src="firebase.js"></script>
 <script type="module">
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-window.signup = () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  window.signup = () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  if(!email || !password){
-    alert("Please enter email and password");
-    return;
-  }
+    if(!email || !password){
+      alert("Please enter email and password");
+      return;
+    }
 
-  createUserWithEmailAndPassword(window.firebaseAuth, email, password)
-    .then(() => window.location.href = "index.html")
-    .catch(err => alert(err.message));
-};
+    createUserWithEmailAndPassword(window.firebaseAuth, email, password)
+      .then(() => {
+        alert("Account created! Log in now.");
+        window.location.href = "login.html";
+      })
+      .catch(err => alert(err.message));
+  };
 </script>
 
 </body>
