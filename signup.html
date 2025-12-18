@@ -1,50 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sign Up - GrimStock</title>
+  <title>Sign Up</title>
   <link rel="stylesheet" href="style.css">
-  <script src="js/auth.js"></script>
-  <script src="js/roles.js"></script>
 </head>
-<body>
+<body class="center">
 
-<header>
-  <div class="logo">GrimStock</div>
-</header>
+<h2>Create Account</h2>
 
-<h2>Sign Up</h2>
-<input type="text" id="username" placeholder="Username">
-<input type="password" id="password" placeholder="Password">
-<select id="role">
-  <option value="buyer">Buyer</option>
-  <option value="seller">Seller</option>
-</select>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 <button onclick="signup()">Sign Up</button>
 
-<script>
-function signup() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  const role = document.getElementById("role").value;
+<script type="module" src="firebase.js"></script>
 
-  if(!user || !pass){ alert("Fill all fields"); return; }
+<script type="module">
+  import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-  if(role==="buyer"){
-    let buyers = getBuyers();
-    if(buyers.find(b=>b.username===user)){ alert("Username exists"); return; }
-    buyers.push({username:user,password:pass});
-    saveBuyers(buyers);
-    saveSession(user,"buyer");
-  } else if(role==="seller"){
-    let sellers = getSellers();
-    if(sellers.find(b=>b.username===user)){ alert("Username exists"); return; }
-    sellers.push({username:user,password:pass});
-    saveSellers(sellers);
-    saveSession(user,"seller");
-  }
-  alert("Sign up successful!");
-  window.location.href = "index.html";
-}
+  window.signup = () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    createUserWithEmailAndPassword(window.firebaseAuth, email, password)
+      .then(() => window.location.href = "index.html")
+      .catch(err => alert(err.message));
+  };
 </script>
 
 </body>
