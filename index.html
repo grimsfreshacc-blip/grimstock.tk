@@ -1,26 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>GrimStock</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<header>
-  <h1>GrimStock</h1>
-  <nav>
-    <a href="index.html">Products</a>
-    <a href="#" id="supportBtn">Support</a>
-    <a href="login.html" id="loginBtn">Login</a>
-    <a href="#" id="dashboardBtn" style="display:none;">Dashboard</a>
-  </nav>
-</header>
-
-<div id="supportNotice">
-  ⚠️ Need Support? Click the chat at the bottom-right!
-</div>
-
 <section class="products">
   <div class="card">
     <img src="images/account1.jpg" alt="Account">
@@ -32,57 +9,29 @@
 
 <script type="module" src="firebase.js"></script>
 <script type="module">
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-// Login state detection
-onAuthStateChanged(window.firebaseAuth, user => {
-  const loginBtn = document.getElementById("loginBtn");
-  const dashBtn = document.getElementById("dashboardBtn");
-  if(user){
-    loginBtn.style.display = "none";
-    dashBtn.style.display = "inline";
-  } else {
-    loginBtn.style.display = "inline";
-    dashBtn.style.display = "none";
-  }
-});
-
-// Purchase buttons
-document.querySelectorAll(".purchaseBtn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const user = window.firebaseAuth.currentUser;
-    if(!user){
-      alert("You must log in to purchase");
-      window.location.href = "login.html";
+  onAuthStateChanged(window.firebaseAuth, user => {
+    const loginBtn = document.getElementById("loginBtn");
+    const dashBtn = document.getElementById("dashboardBtn");
+    if(user){
+      loginBtn.style.display = "none";
+      dashBtn.style.display = "inline";
     } else {
-      window.open("https://cash.app/$YourCashTag", "_blank");
+      loginBtn.style.display = "inline";
+      dashBtn.style.display = "none";
     }
   });
-});
 
-// Dashboard button
-document.getElementById("dashboardBtn").addEventListener("click", () => {
-  window.location.href = "dashboard-user.html"; // basic user dashboard
-});
-
-// Support button
-document.getElementById("supportBtn").addEventListener("click", () => {
-  if(typeof Tawk_API !== "undefined") Tawk_API.maximize();
-});
+  document.querySelectorAll(".purchaseBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const user = window.firebaseAuth.currentUser;
+      if(!user){
+        alert("You must log in to purchase accounts!");
+        window.location.href = "login.html";
+      } else {
+        window.open("https://cash.app/$YourCashTag", "_blank");
+      }
+    });
+  });
 </script>
-
-<!-- Tawk.to -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69429875f5aaa6197ee506c6/1jcm272l4';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-
-</body>
-</html>
